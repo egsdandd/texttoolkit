@@ -2,20 +2,20 @@
 
 export default class TextFormatter {
   constructor(text) {
-    this.text = typeof text === 'string' ? text : '';
+    this.text = typeof text === 'string' ? text : ''
   }
 
   toUpperCase() {
-    return this.text.toUpperCase();
+    return this.text.toUpperCase()
   }
 
   toLowerCase() {
-    return this.text.toLowerCase();
+    return this.text.toLowerCase()
   }
 
   capitalizeWords() {
     // Gör första bokstaven i varje ord versal
-    return this.text.replace(/\b\w/g, char => char.toUpperCase());
+    return this.text.replace(/\b\w/g, char => char.toUpperCase())
   }
 
   toCamelCase() {
@@ -25,12 +25,12 @@ export default class TextFormatter {
       .replace(/[_\-]+/g, ' ')
       .replace(/[^\w\s]/g, '')
       .split(' ')
-      .filter(Boolean);
-    if (words.length === 0) return '';
+      .filter(Boolean)
+    if (words.length === 0) return ''
     return words + words
       .slice(1)
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join('');
+      .join('')
   }
 
   toSnakeCase() {
@@ -38,12 +38,12 @@ export default class TextFormatter {
     return this.text
       .toLowerCase()
       .replace(/[\s\-]+/g, '_')
-      .replace(/[^\w_]/g, '');
+      .replace(/[^\w_]/g, '')
   }
 
   trimWhitespace() {
     // Ta bort överflödigt whitespace runt texten
-    return this.text.trim();
+    return this.text.trim()
   }
 
   // Lägg till fler formatteringsfunktioner efter behov...
