@@ -1,5 +1,3 @@
-# Kan du fixa till denna README.md med lite formattering och styling:
-
 # texttoolkit
 
 Assignment L2 in 1DV610
@@ -86,9 +84,7 @@ Håll en CHANGELOG.md-fil för att dokumentera viktiga ändringar i varje versio
 Kommunikation om hur användare kan bidra till projektet.
 För frågor om oklara konventioner eller för att föreslå ändringar, uppdatera denna fil och meddela underhållaren.
 
-Här är ett snyggt och tydligt formatterat och strukturerat README.md, med rubriker, listor, kodblock och fet/kursiv stil för klarhet:
 
-```markdown
 # texttoolkit
 
 _Assignment L2 in 1DV610_

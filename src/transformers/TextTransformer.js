@@ -64,7 +64,7 @@ export default class TextTransformer {
     validateNonEmptyString(newWord, 'newWord')
     if (!this.text.trim()) return ''
     // Word boundary regex, case-sensitive byte
-    const pattern = new RegExp(`\b${oldWord}\b`, 'g')
+    const pattern = new RegExp(`\\b${oldWord}\\b`, 'g')
     return this.text.replace(pattern, newWord)
   }
 }
