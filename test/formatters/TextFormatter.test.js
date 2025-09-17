@@ -1,9 +1,33 @@
 import TextFormatter from '../../src/formatters/TextFormatter.js';
 
-const formatter = new TextFormatter('  HeLlo World-Example_text  ');
-console.log(formatter.toUpperCase());     // "  HELLO WORLD-EXAMPLE_TEXT  "
-console.log(formatter.toLowerCase());     // "  hello world-example_text  "
-console.log(formatter.capitalizeWords()); // "  HeLlo World-Example_text  "
-console.log(formatter.toCamelCase());     // "helloWorldExampleText"
-console.log(formatter.toSnakeCase());     // "hello_world_example_text"
-console.log(formatter.trimWhitespace());  // "HeLlo World-Example_text"
+describe('TextFormatter', () => {
+  let formatter;
+
+  beforeEach(() => {
+    formatter = new TextFormatter('  HeLlo World-Example_text  ');
+  });
+
+  test('converts to upper case', () => {
+    expect(formatter.toUpperCase()).toBe('  HELLO WORLD-EXAMPLE_TEXT  ');
+  });
+
+  test('converts to lower case', () => {
+    expect(formatter.toLowerCase()).toBe('  hello world-example_text  ');
+  });
+
+  test('capitalizes words', () => {
+    expect(formatter.capitalizeWords()).toBe('  HeLlo World-Example_text  ');
+  });
+
+  test('converts to camelCase', () => {
+    expect(formatter.toCamelCase()).toBe('helloWorldExampleText');
+  });
+
+  test('converts to snake_case', () => {
+    expect(formatter.toSnakeCase()).toBe('hello_world_example_text');
+  });
+
+  test('trims whitespace', () => {
+    expect(formatter.trimWhitespace()).toBe('HeLlo World-Example_text');
+  });
+});

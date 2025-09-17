@@ -1,66 +1,71 @@
 // src/analyzers/TextAnalyzer.js
-import { isNonEmptyString, MAX_TEXT_LENGTH } from '../utils/inputValidation.js';
+
+import {
+  validateNonEmptyString,
+  validateMaxLength,
+  validateBoolean,
+  MAX_TEXT_LENGTH,
+} from '../utils/inputValidation.js'
+
+import {
+  EmptyStringError,
+  InvalidTypeError,
+  InvalidBooleanError,
+  TooLongError,
+} from '../utils/errors.js'
+
+const WORD_REGEX = /\b[a-zA-ZåäöÅÄÖ]+\b/g // Hanterar svenska och engelska bokstäver
 
 export default class TextAnalyzer {
   constructor(text) {
-    // Typkontroll, whitespace-only och maxlängd
-    if (typeof text !== 'string' || text.trim().length === 0) {
-      this.text = '';
-    } else if (text.length > MAX_TEXT_LENGTH) {
-      throw new Error(`Texten är för lång för analys (max ${MAX_TEXT_LENGTH} tecken).`);
-    } else {
-      this.text = text;
-    }
+    validateNonEmptyString(text, 'Text')
+    validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
+    this.text = text
   }
 
   countWords() {
-    if (!isNonEmptyString(this.text)) return 0;
-    // Valfritt: ignorera text med ogiltiga tecken som siffror, specialsymboler eller emoji
-    // if (/[^a-zA-ZåäöÅÄÖ\s.,!?]/.test(this.text)) return 0;
-    const words = this.text.trim().match(/\b\w+\b/g);
-    return words ? words.length : 0;
+    if (!this.text.trim()) return 0
+    const words = this.text.match(WORD_REGEX)
+    return words ? words.length : 0
   }
 
   countSentences() {
-    if (!isNonEmptyString(this.text)) return 0;
-    const sentences = this.text.match(/[\w\s,;:"'’\-–—]+\s*([.!?]|(\.\.\.))(\s|$)/g);
-    return sentences ? sentences.length : 0;
+    if (!this.text.trim()) return 0
+    const sentences = this.text.match(/[\wåäöÅÄÖ\s,;:"'’\-–—]+\s*([.!?]|(\.\.\.))(\s|$)/g)
+    return sentences ? sentences.length : 0
   }
 
   countCharacters(includeSpaces = true) {
-    if (!isNonEmptyString(this.text)) return 0;
-    if (typeof includeSpaces !== 'boolean') throw new TypeError('Argumentet till countCharacters måste vara boolean.');
+    if (!this.text.trim()) return 0
+    validateBoolean(includeSpaces, 'includeSpaces')
     return includeSpaces
       ? this.text.length
-      : this.text.replace(/\s/g, '').length;
+      : this.text.replace(/\s/g, '').length
   }
 
   letterFrequency() {
-    if (!isNonEmptyString(this.text)) return {};
-    // Valfritt: ignorera ovanliga tecken, men räkna svenska bokstäver
-    const freq = {};
+    if (!this.text.trim()) return {}
+    const freq = {}
     for (const char of this.text.toLowerCase()) {
-      if (/[a-zåäö]/i.test(char)) {
-        freq[char] = (freq[char] || 0) + 1;
+      if (/[a-zåäö]/.test(char)) {
+        freq[char] = (freq[char] || 0) + 1
       }
     }
-    return freq;
+    return freq
   }
 
   findPalindromes() {
-    if (!isNonEmptyString(this.text)) return [];
-    const words = this.text.toLowerCase().match(/\b\w+\b/g) || [];
-    const palindromes = new Set();
+    if (!this.text.trim()) return []
+    const words = this.text.toLowerCase().match(WORD_REGEX) || []
+    const palindromes = new Set()
     for (const word of words) {
-      // Endast ord med bokstäver, inga siffror/symboler, och minst två tecken
       if (
         word.length > 1 &&
-        /^[a-zåäö]+$/i.test(word) &&
         word === word.split('').reverse().join('')
       ) {
-        palindromes.add(word);
+        palindromes.add(word)
       }
     }
-    return Array.from(palindromes);
+    return Array.from(palindromes)
   }
 }

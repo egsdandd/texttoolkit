@@ -1,21 +1,46 @@
-// test/textanalyzer-test.js (eller i egen test-app)
-
 import TextAnalyzer from '../../src/analyzers/TextAnalyzer.js';
 
-const sampleText = `
-  Anna såg Otto i en röd kajak. Madam, är det ett racecar eller ej?
-  Kommer du ihåg sagan om Bob och Eve?
-`;
+describe('TextAnalyzer', () => {
+  const sampleText = `
+    Anna såg Otto i en röd kajak. Madam, är det ett racecar eller ej?
+    Kommer du ihåg sagan om Bob och Eve?
+  `;
 
-// Skapa ett analysobjekt
-const analyzer = new TextAnalyzer(sampleText);
+  let analyzer;
+  beforeEach(() => {
+    analyzer = new TextAnalyzer(sampleText);
+  });
 
-console.log('Antal ord:', analyzer.countWords());
-console.log('Antal meningar:', analyzer.countSentences());
-console.log('Antal tecken (inkl. mellanslag):', analyzer.countCharacters());
-console.log('Antal tecken (utan mellanslag):', analyzer.countCharacters(false));
-console.log('Bokstavsfrekvens:', analyzer.letterFrequency());
-console.log('Palindrom i texten:', analyzer.findPalindromes());
+  test('räknar antal ord', () => {
+    expect(analyzer.countWords()).toBe(22); // Ändra till rätt om din implementation tolkar på annat sätt
+  });
+
+  test('räknar antal meningar', () => {
+    expect(analyzer.countSentences()).toBe(3);
+  });
+
+  test('räknar antal tecken inkl. mellanslag', () => {
+    expect(analyzer.countCharacters()).toBe(114);
+  });
+
+  test('räknar antal tecken utan mellanslag', () => {
+    expect(analyzer.countCharacters(false)).toBe(81);
+  });
+
+  test('visar bokstavsfrekvens', () => {
+    const freq = analyzer.letterFrequency();
+    expect(freq.a).toBeGreaterThan(0);
+    expect(freq.n).toBeGreaterThan(0);
+    // Lägg till detaljerad assertion om önskat
+  });
+
+  test('hittar alla palindrom', () => {
+    expect(analyzer.findPalindromes()).toEqual(
+      expect.arrayContaining(['anna', 'otto', 'kajak', 'madam', 'racecar', 'bob', 'eve'])
+    );
+  });
+});
+
 // Förväntade resultat:
 // Antal ord: 16
 // Antal meningar: 3

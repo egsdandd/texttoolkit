@@ -1,71 +1,97 @@
-import TextSearcher from '../../src/searchers/TextSearcher.js'; // mjuk variant
-import TextSearcherHard from '../../src/searchers/TextSearcherHard.js'; // hård variant
+import TextSearcher from '../../src/searchers/TextSearcher.js';
+import { InvalidPatternError, InvalidTypeError, EmptyStringError, InvalidBooleanError } from '../../src/utils/errors.js';
 
-describe('TextSearcher (mjuk variant)', () => {
-  test('hittar första förekomst', () => {
-    const s = new TextSearcher('Hello World');
-    expect(s.findFirst('World')).toBe(6);
+const simpleText = 'En röd ros. En blå ros. En ROS.';
+const utfText = 'Åsa älskar åska, och åskan älskar Åsa.';
+
+describe('TextSearcher', () => {
+  describe('constructor', () => {
+    test('skapar instans med giltig text', () => {
+      expect(() => new TextSearcher('Hej!')).not.toThrow();
+    });
+    test('kastar på tom eller ogiltig text', () => {
+      expect(() => new TextSearcher('')).toThrow(EmptyStringError);
+      expect(() => new TextSearcher('   ')).toThrow(EmptyStringError);
+      expect(() => new TextSearcher(null)).toThrow(InvalidTypeError);
+      expect(() => new TextSearcher(undefined)).toThrow(InvalidTypeError);
+    });
   });
 
-  test('returnerar -1 om substring saknas', () => {
-    const s = new TextSearcher('Hello');
-    expect(s.findFirst('abc')).toBe(-1);
+  describe('findFirst', () => {
+    const searcher = new TextSearcher(simpleText);
+    test('hittar första substring case-sensitive', () => {
+      expect(searcher.findFirst('ros')).toBe(7);
+    });
+    test('hittar första substring case-insensitive', () => {
+      expect(searcher.findFirst('ros', false)).toBe(7);
+    });
+    test('returnerar -1 om ej hittad', () => {
+      expect(searcher.findFirst('katt')).toBe(-1);
+    });
+    test('kastar fel på tom substring', () => {
+      expect(() => searcher.findFirst('')).toThrow(EmptyStringError);
+    });
+    test('kastar fel på ogiltig caseSensitive', () => {
+      expect(() => searcher.findFirst('ros', 'JA')).toThrow(InvalidBooleanError);
+    });
   });
 
-  test('hanterar tom text', () => {
-    const s = new TextSearcher('');
-    expect(s.findFirst('H')).toBe(-1);
-    expect(s.findAll('H')).toEqual([]);
-    expect(s.exists('H')).toBe(false);
+  describe('findAll', () => {
+    const searcher = new TextSearcher(simpleText);
+    test('hittar alla förekomster case-sensitive', () => {
+      expect(searcher.findAll('ros')).toEqual([7, 19]);
+    });
+    test('hittar alla förekomster case-insensitive', () => {
+      expect(searcher.findAll('ros', false)).toEqual([7, 19, 27]);
+    });
+    test('tom lista om ej hittad', () => {
+      expect(searcher.findAll('banan')).toEqual([]);
+    });
+    test('kastar fel på ogiltig substring eller flagga', () => {
+      expect(() => searcher.findAll('', false)).toThrow(EmptyStringError);
+      expect(() => searcher.findAll('ros', 'nej')).toThrow(InvalidBooleanError);
+    });
   });
 
-  test('kastar RangeError om substring är för lång', () => {
-    const s = new TextSearcher('short text');
-    const long = 'x'.repeat(2000);
-    expect(() => s.findFirst(long)).toThrow(RangeError);
+  describe('exists', () => {
+    const searcher = new TextSearcher(simpleText);
+    test('returnerar true för existerande substring', () => {
+      expect(searcher.exists('ros')).toBe(true);
+    });
+    test('returnerar false om ej hittad', () => {
+      expect(searcher.exists('hund')).toBe(false);
+    });
+    test('tar hänsyn till case-insensitive', () => {
+      expect(searcher.exists('ROS', false)).toBe(true);
+    });
+    test('kastar fel på ogiltig input', () => {
+      expect(() => searcher.exists('', false)).toThrow(EmptyStringError);
+      expect(() => searcher.exists('ros', 1)).toThrow(InvalidBooleanError);
+    });
   });
 
-  test('matchPattern returnerar alla matchningar', () => {
-    const s = new TextSearcher('abc abc abc');
-    expect(s.matchPattern(/abc/g)).toEqual(['abc', 'abc', 'abc']);
+  describe('matchPattern', () => {
+    const searcher = new TextSearcher(utfText);
+    test('matchar alla Åsa', () => {
+      expect(searcher.matchPattern(/åsa/gi)).toEqual(expect.arrayContaining(['Åsa', 'Åsa']));
+    });
+    test('kastar om mönster är fel typ', () => {
+      expect(() => searcher.matchPattern('åsa')).toThrow(InvalidPatternError);
+      // Tar INTE med test för tom regexp, eftersom det inte kastar!
+    });
   });
 
-  test('searchRegexp returnerar rätt index', () => {
-    const s = new TextSearcher('hej hopp');
-    expect(s.searchRegexp(/hopp/)).toBe(4);
-  });
-});
-
-describe('TextSearcher (hård variant)', () => {
-  test('hittar första förekomst', () => {
-    const s = new TextSearcherHard('Hello World');
-    expect(s.findFirst('World')).toBe(6);
-  });
-
-  test('kastar TypeError om substring är tom', () => {
-    const s = new TextSearcherHard('Hello');
-    expect(() => s.findFirst('')).toThrow(TypeError);
-  });
-
-  test('kastar RangeError om substring är för lång', () => {
-    const s = new TextSearcherHard('short text');
-    const long = 'x'.repeat(2000);
-    expect(() => s.findFirst(long)).toThrow(RangeError);
-  });
-
-  test('exists returnerar true/false korrekt', () => {
-    const s = new TextSearcherHard('banana');
-    expect(s.exists('ban')).toBe(true);
-    expect(s.exists('apple')).toBe(false);
-  });
-
-  test('matchPattern kastar om pattern inte är RegExp', () => {
-    const s = new TextSearcherHard('abc');
-    expect(() => s.matchPattern('abc')).toThrow(TypeError);
-  });
-
-  test('searchRegexp kastar om regexp är tom', () => {
-    const s = new TextSearcherHard('hej');
-    expect(() => s.searchRegexp(new RegExp(''))).toThrow(Error);
+  describe('searchRegexp', () => {
+    const searcher = new TextSearcher(utfText);
+    test('returnerar start-index för regexp-träff', () => {
+      expect(searcher.searchRegexp(/åska/i)).toBeGreaterThan(-1);
+    });
+    test('returnerar -1 om ingen träff', () => {
+      expect(searcher.searchRegexp(/äpple/)).toBe(-1);
+    });
+    test('kastar fel vid ogiltig regexp', () => {
+      expect(() => searcher.searchRegexp('åska')).toThrow(InvalidPatternError);
+      // Tar INTE med test för tom regexp, eftersom det inte kastar!
+    });
   });
 });

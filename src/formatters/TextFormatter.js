@@ -1,62 +1,71 @@
 // src/formatters/TextFormatter.js
-import { isNonEmptyString, MAX_TEXT_LENGTH } from '../utils/inputValidation.js';
+
+import {
+  validateNonEmptyString,
+  validateMaxLength,
+  MAX_TEXT_LENGTH
+} from '../utils/inputValidation.js'
+
+import {
+  EmptyStringError,
+  InvalidTypeError
+} from '../utils/errors.js'
+
+const WORD_START_REGEX = /\b[a-zA-ZåäöÅÄÖ]/g // Svenska+engelska bokstäver
 
 export default class TextFormatter {
   constructor(text) {
-    if (typeof text !== 'string' || text.trim().length === 0) {
-      this.text = '';
-    } else if (text.length > MAX_TEXT_LENGTH) {
-      throw new Error(`Texten är för lång för formattering (max ${MAX_TEXT_LENGTH} tecken).`);
-    } else {
-      this.text = text;
-    }
+    validateNonEmptyString(text, 'Text')
+    validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
+    this.text = text
   }
 
   toUpperCase() {
-    if (!isNonEmptyString(this.text)) return '';
-    return this.text.toUpperCase();
+    if (!this.text.trim()) return ''
+    return this.text.toUpperCase()
   }
 
   toLowerCase() {
-    if (!isNonEmptyString(this.text)) return '';
-    return this.text.toLowerCase();
+    if (!this.text.trim()) return ''
+    return this.text.toLowerCase()
   }
 
   capitalizeWords() {
-    if (!isNonEmptyString(this.text)) return '';
-    return this.text.replace(/\b\w/g, char => char.toUpperCase());
+    if (!this.text.trim()) return ''
+    return this.text.replace(WORD_START_REGEX, char => char.toUpperCase())
   }
 
   toCamelCase() {
-    if (!isNonEmptyString(this.text)) return '';
+    if (!this.text.trim()) return ''
     const words = this.text
       .toLowerCase()
       .replace(/[_\-]+/g, ' ')
-      .replace(/[^\w\s]/g, '')
+      .replace(/[^\wåäöÅÄÖ\s]/g, '')
       .split(' ')
-      .filter(Boolean);
-    if (words.length === 0) return '';
+      .filter(Boolean)
+    if (words.length === 0) return ''
     return (
       words[0] +
       words
         .slice(1)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join('')
-    );
+    )
   }
 
   toSnakeCase() {
-    if (!isNonEmptyString(this.text)) return '';
+    if (!this.text.trim()) return ''
     return this.text
+      .trim()
       .toLowerCase()
       .replace(/[\s\-]+/g, '_')
-      .replace(/[^\w_]/g, '');
+      .replace(/[^\wåäöÅÄÖ_]/g, '')
   }
 
   trimWhitespace() {
-    if (typeof this.text !== 'string') return '';
-    return this.text.trim();
+    validateNonEmptyString(this.text, 'Text')
+    return this.text.trim()
   }
 
-  // Lägg till fler formatteringsfunktioner med kontroller här...
+  // Du kan lägga till framtida formatteringsfunktioner här med samma kontrollmönster
 }
