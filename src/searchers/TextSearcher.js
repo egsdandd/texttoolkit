@@ -1,3 +1,5 @@
+// src/searchers/TextSearcher.js
+
 import {
   isNonEmptyString,
   validateNonEmptyString,

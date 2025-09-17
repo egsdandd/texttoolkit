@@ -32,4 +32,8 @@ export function validateBoolean(val, param = 'Argumentet') {
   if (typeof val !== 'boolean') throw new InvalidBooleanError(param)
 }
 
+export function validateFunction(fn, param = 'Argumentet') {
+  if (typeof fn !== 'function') throw new InvalidTypeError(param, 'en funktion')
+}
+
 export const MAX_TEXT_LENGTH = 100000 // eller vad du vill

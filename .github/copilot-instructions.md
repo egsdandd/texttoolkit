@@ -1,56 +1,41 @@
 # Copilot Instructions for texttoolkit
 
 ## Project Overview
-- **texttoolkit** is a modular JavaScript toolkit for text analysis and transformation, designed for educational use (1DV610 assignment).
-- The core API is exposed via `TextDocument` (see `src/TextDocument.js`), which composes and delegates to specialized modules for analysis, formatting, searching, and transformation.
-- All modules are ES6 classes, and the project uses ECMAScript modules (`type: module` in `package.json`).
+- **texttoolkit** is a modular JavaScript toolkit for advanced text analysis, formatting, searching, and transformation, with Swedish and English language support.
+- The main entry point is `src/TextDocument.js`, which composes analyzers, formatters, searchers, and transformers into a single API.
+- All public APIs are exported via `src/index.js`.
 
 ## Architecture & Key Components
-- **src/TextDocument.js**: Main entry point. Wraps a text string and exposes high-level methods by delegating to:
-  - `analyzers/TextAnalyzer.js`: Word, sentence, character counts, letter frequency, palindrome detection.
-  - `formatters/TextFormatter.js`: Case conversion, capitalization, camelCase, snake_case, whitespace trimming.
-  - `searchers/TextSearcher.js` and `transformers/TextTransformer.js`, `transformers/TextReverser.js`: (Extendable for searching and text transformation.)
-- **src/index.js**: Aggregates and re-exports all main classes for external use.
-- **examples/**: Usage examples (see `examples/exampel1.js`).
-- **test/**: Simple test scripts for each module (run with Node, not Jest syntax).
+- **src/TextDocument.js**: Facade class. Instantiates and delegates to:
+  - `analyzers/TextAnalyzer.js`: Word, sentence, character, frequency, and palindrome analysis.
+  - `formatters/TextFormatter.js`: Case, whitespace, and string format conversions.
+  - `searchers/TextSearcher.js`: Substring and regex search, with robust validation.
+  - `transformers/TextTransformer.js` and `TextReverser.js`: Word and text transformations (reverse, replace, etc).
+- **Validation & Errors**: All user input is validated via `utils/inputValidation.js` and custom errors in `utils/errors.js`.
+- **Examples**: See `examples/exampel1.js` and `exampel2.js` for usage patterns, including file-based workflows.
 
 ## Developer Workflows
-- **Linting**: Run `npm run lint` (uses ESLint with JSDoc rules, see `eslint.config.js`).
-- **Lint autofix**: `npm run lint:fix`
-- **Testing**: Run `npm test` (uses Jest, but tests are simple scripts using `console.log`).
-- **Debugging**: Use Node.js to run example or test files directly for quick feedback.
+- **Linting**: Run `npm run lint` (or `lint:fix`) to check/fix code style. Enforces JSDoc and strict rules via `eslint.config.js`.
+- **Testing**: Run `npm test` to execute Jest tests in the `test/` directory. Tests cover all major modules and edge cases.
+- **Debugging**: Use the example scripts in `examples/` to quickly try out new features or debug API changes.
+- **Module Imports**: All code uses ES modules (`import/export`).
 
-## Project Conventions
-- All source files are in `src/`, grouped by function (analyzers, formatters, etc.).
-- Each class expects a string as input and exposes methods for specific text operations.
-- JSDoc comments are required for public methods (enforced by ESLint).
-- Swedish and English are both used in comments and variable names.
-- Example/test files use direct imports with relative paths (adjust as needed).
+## Project-Specific Conventions
+- **Language Support**: Regexes and logic handle both Swedish and English characters (e.g., `åäö` in word boundaries).
+- **Validation**: All public methods validate input and throw descriptive custom errors.
+- **No Side Effects**: All classes are pure and stateless except for the text value in `TextDocument` and its delegates.
+- **Consistent API**: All main operations are exposed as methods on `TextDocument` (see tests and examples for method names).
+- **JSDoc Required**: All public methods must be documented with JSDoc (enforced by lint).
 
 ## Integration & Extensibility
-- To add new text operations, create a new class in the appropriate subfolder and compose it in `TextDocument`.
-- Extend the public API by adding wrapper methods in `TextDocument`.
-- All modules are designed for composition and delegation, not inheritance.
+- **Add new analyzers/formatters/searchers/transformers** by following the structure in `src/` and updating `TextDocument.js` and `index.js`.
+- **Error Handling**: Always use the custom error types from `utils/errors.js` for validation failures.
 
-## Key Files
-- `src/TextDocument.js` (composition/delegation pattern)
-- `src/analyzers/TextAnalyzer.js`, `src/formatters/TextFormatter.js`
-- `examples/exampel1.js` (usage pattern)
-- `test/` (test scripts)
-- `eslint.config.js` (linting rules)
-
-## Example Usage
-```js
-import TextDocument from './src/TextDocument.js';
-const doc = new TextDocument('Anna såg Otto paddla kajak.');
-console.log(doc.countWords()); // 5
-console.log(doc.toCamelCase()); // annaSågOttoPaddlaKajak
-```
+## References
+- See `test/` for expected behaviors and edge cases.
+- See `examples/` for real-world usage and integration patterns.
+- See `eslint.config.js` for enforced code style and documentation rules.
 
 ---
 
-**For AI agents:**
-- Always update `TextDocument` when adding new text features.
-- Follow the composition/delegation pattern for new modules.
-- Maintain JSDoc comments for all public methods.
-- Use the provided scripts for linting and testing.
+For questions about unclear conventions or to propose changes, update this file and notify the maintainer.
