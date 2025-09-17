@@ -1,7 +1,8 @@
 {
   "name": "texttoolkit",
   "version": "1.0.0",
-  "description": "Uppgift L2 1DV610",
+  "description": "Uppgift L2 1DV610 - Modulär JavaScript-toolkit för textanalys",
+  "author": "Dan-Håkan Davall <dd222mk@student.lnu.se>",
   "main": "index.js",
   "type": "module",
   "directories": {
@@ -21,8 +22,7 @@
     "type": "git",
     "url": "git+https://github.com/egsdandd/texttoolkit.git"
   },
-  "author": "Dan-Håkan Davall",
-  "license": "MIT",
+    "license": "MIT",
   "bugs": {
     "url": "https://github.com/egsdandd/texttoolkit/issues"
   },
