@@ -1,5 +1,8 @@
 // src/formatters/TextReverser.js
 
+/** @module formatters/TextReverser
+ * Innehåller klassen TextReverser för att vända text på olika sätt.
+ */
 import {
   validateNonEmptyString,
   validateMaxLength,
@@ -15,7 +18,18 @@ import {
   InvalidTypeError
 } from '../utils/errors.js'
 
+/** Klass för att vända text på olika sätt.
+  * @throws {EmptyStringError} Om text är tom eller bara whitespace.
+  * @throws {TooLongError} Om text är längre än MAX_TEXT_LENGTH.
+  * @throws {InvalidTypeError} Om minLength inte är ett positivt heltal.
+  * @throws {InvalidBooleanError} Om ignoreCase inte är boolean.
+  * 
+ */
 export default class TextReverser {
+  /**
+   *
+   * @param text
+   */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
     validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
@@ -23,12 +37,18 @@ export default class TextReverser {
   }
 
   // Vänd hela texten
+  /**
+   *
+   */
   reverse() {
     if (!this.text.trim()) return ''
     return this.text.split('').reverse().join('')
   }
 
   // Vänd varje ord för sig (men behåll ordningsföljd)
+  /**
+   *
+   */
   reverseWordsIndividually() {
     if (!this.text.trim()) return ''
     return this.text
@@ -38,18 +58,28 @@ export default class TextReverser {
   }
 
   // Vänd ordningen på alla ord (men behåll varje ord intakt)
+  /**
+   *
+   */
   reverseWordOrder() {
     if (!this.text.trim()) return ''
     return this.text.split(' ').reverse().join(' ')
   }
 
   // Vänd radordningen om texten innehåller radbrytningar
+  /**
+   *
+   */
   reverseLines() {
     if (!this.text.trim()) return ''
     return this.text.split('\n').reverse().join('\n')
   }
 
   // Vänd endast ord som är längre än minLength tecken
+  /**
+   *
+   * @param minLength
+   */
   reverseLongWords(minLength = 4) {
     if (!this.text.trim()) return ''
     if (!Number.isInteger(minLength) || minLength < 1) throw new InvalidTypeError('minLength', 'ett heltal större än 0')
@@ -62,6 +92,9 @@ export default class TextReverser {
   }
 
   // Reversera varje mening (delar på punkt, utropstecken, frågetecken)
+  /**
+   *
+   */
   reverseEachSentence() {
     if (!this.text.trim()) return ''
     return this.text.split(/([.!?])/)
@@ -70,6 +103,10 @@ export default class TextReverser {
   }
 
   // Kontrollera om hela texten är ett palindrom
+  /**
+   *
+   * @param ignoreCase
+   */
   isPalindrome(ignoreCase = true) {
     validateBoolean(ignoreCase, 'ignoreCase')
     if (!this.text.trim()) return false
@@ -78,6 +115,9 @@ export default class TextReverser {
   }
 
   // Reverse och gör första bokstaven i varje reverserat ord till versal
+  /**
+   *
+   */
   reverseAndCapitalizeWords() {
     if (!this.text.trim()) return ''
     return this.text.split(' ')

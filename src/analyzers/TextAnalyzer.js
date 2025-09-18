@@ -16,25 +16,42 @@ import {
 
 const WORD_REGEX = /\b[a-zA-ZåäöÅÄÖ]+\b/g // Hanterar svenska och engelska bokstäver
 
+/**
+ *
+ */
 export default class TextAnalyzer {
+  /**
+   *
+   * @param text
+   */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
     validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
     this.text = text
   }
 
+  /**
+   *
+   */
   countWords() {
     if (!this.text.trim()) return 0
     const words = this.text.match(WORD_REGEX)
     return words ? words.length : 0
   }
 
+  /**
+   *
+   */
   countSentences() {
     if (!this.text.trim()) return 0
     const sentences = this.text.match(/[\wåäöÅÄÖ\s,;:"'’\-–—]+\s*([.!?]|(\.\.\.))(\s|$)/g)
     return sentences ? sentences.length : 0
   }
 
+  /**
+   *
+   * @param includeSpaces
+   */
   countCharacters(includeSpaces = true) {
     if (!this.text.trim()) return 0
     validateBoolean(includeSpaces, 'includeSpaces')
@@ -43,6 +60,9 @@ export default class TextAnalyzer {
       : this.text.replace(/\s/g, '').length
   }
 
+  /**
+   *
+   */
   letterFrequency() {
     if (!this.text.trim()) return {}
     const freq = {}
@@ -54,6 +74,9 @@ export default class TextAnalyzer {
     return freq
   }
 
+  /**
+   *
+   */
   findPalindromes() {
     if (!this.text.trim()) return []
     const words = this.text.toLowerCase().match(WORD_REGEX) || []

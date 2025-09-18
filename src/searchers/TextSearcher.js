@@ -17,13 +17,25 @@ import {
 const MAX_SUBSTRING_LENGTH = 1000
 const MAX_REGEX_SOURCE_LENGTH = 500
 
+/**
+ *
+ */
 export default class TextSearcher {
+  /**
+   *
+   * @param text
+   */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
     validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
     this.text = text.normalize('NFC')
   }
 
+  /**
+   *
+   * @param substring
+   * @param caseSensitive
+   */
   findFirst(substring, caseSensitive = true) {
     validateNonEmptyString(substring, 'Substring')
     validateMaxLength(substring, MAX_SUBSTRING_LENGTH, 'Substring')
@@ -33,6 +45,11 @@ export default class TextSearcher {
     return searchText.indexOf(searchSub)
   }
 
+  /**
+   *
+   * @param substring
+   * @param caseSensitive
+   */
   findAll(substring, caseSensitive = true) {
     validateNonEmptyString(substring, 'Substring')
     validateMaxLength(substring, MAX_SUBSTRING_LENGTH, 'Substring')
@@ -48,12 +65,21 @@ export default class TextSearcher {
     return positions
   }
 
+  /**
+   *
+   * @param substring
+   * @param caseSensitive
+   */
   exists(substring, caseSensitive = true) {
     validateNonEmptyString(substring, 'Substring')
     validateBoolean(caseSensitive, 'caseSensitive')
     return this.findFirst(substring, caseSensitive) !== -1
   }
 
+  /**
+   *
+   * @param pattern
+   */
   matchPattern(pattern) {
     if (!(pattern instanceof RegExp)) throw new InvalidPatternError('pattern')
     if (pattern.source === '') throw new EmptyPatternError('pattern')
@@ -61,6 +87,10 @@ export default class TextSearcher {
     return this.text.match(pattern) || []
   }
 
+  /**
+   *
+   * @param regexp
+   */
   searchRegexp(regexp) {
     if (!(regexp instanceof RegExp)) throw new InvalidPatternError('regexp')
     if (regexp.source === '') throw new EmptyPatternError('regexp')
