@@ -6,20 +6,16 @@ import {
   MAX_TEXT_LENGTH
 } from '../utils/inputValidation.js'
 
-import {
-  EmptyStringError,
-  InvalidTypeError
-} from '../utils/errors.js'
-
 const WORD_START_REGEX = /\b[a-zA-ZåäöÅÄÖ]/g // Svenska+engelska bokstäver
 
 /**
+ * TextFormatter class provides various text formatting methods.
  *
  */
 export default class TextFormatter {
   /**
-   *
-   * @param text
+   * Creates an instance of TextFormatter.
+   * @param {string} text The text to be formatted.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
@@ -28,7 +24,8 @@ export default class TextFormatter {
   }
 
   /**
-   *
+   * Converts the text to uppercase.
+   * @returns {string} The uppercase version of the text.
    */
   toUpperCase() {
     if (!this.text.trim()) return ''
@@ -36,7 +33,8 @@ export default class TextFormatter {
   }
 
   /**
-   *
+   * Converts the text to lowercase.
+   * @returns {string} The lowercase version of the text.
    */
   toLowerCase() {
     if (!this.text.trim()) return ''
@@ -44,7 +42,8 @@ export default class TextFormatter {
   }
 
   /**
-   *
+   * Capitalizes the first letter of each word in the text.
+   * @returns {string} The text with each word capitalized.
    */
   capitalizeWords() {
     if (!this.text.trim()) return ''
@@ -52,7 +51,8 @@ export default class TextFormatter {
   }
 
   /**
-   *
+   * Converts the text to title case.
+   * @returns {string} The text with each word capitalized.
    */
   toCamelCase() {
     if (!this.text.trim()) return ''
@@ -73,7 +73,8 @@ export default class TextFormatter {
   }
 
   /**
-   *
+   * Converts the text to snake_case.
+   * @returns {string} The snake_case version of the text.
    */
   toSnakeCase() {
     if (!this.text.trim()) return ''
@@ -85,7 +86,8 @@ export default class TextFormatter {
   }
 
   /**
-   *
+   * Trims leading and trailing whitespace from the text.
+   * @returns {string} The trimmed text.
    */
   trimWhitespace() {
     validateNonEmptyString(this.text, 'Text')

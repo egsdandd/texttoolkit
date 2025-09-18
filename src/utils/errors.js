@@ -1,44 +1,45 @@
 // src/utils/errors.js
 /**
- *
+ * Thrown when a value is not of the expected type.
  */
 export class InvalidTypeError extends TypeError {
   /**
+   * Thrown when a value is not of the expected type.
    *
-   * @param param
-   * @param expected
+   * @param {string} param - The name of the parameter that failed validation.
+   * @param {string} expected - The expected type description.
    */
   constructor(param, expected) {
-    super(`${param} måste vara ${expected}.`)
+    super(`${param} must be ${expected}.`)
     this.name = 'InvalidTypeError'
   }
 }
 
 /**
- *
+ * Thrown when a string is empty.
  */
 export class EmptyStringError extends TypeError {
   /**
-   *
-   * @param param
+   * Thrown when a string is empty.
+   * @param {string} param - The name of the parameter that failed validation.
    */
   constructor(param) {
-    super(`${param} får inte vara tom.`)
+    super(`${param} must not be empty.`)
     this.name = 'EmptyStringError'
   }
 }
 
 /**
- *
+ * Thrown when a string exceeds the maximum allowed length.
  */
 export class TooLongError extends RangeError {
   /**
-   *
-   * @param param
-   * @param max
+   * Thrown when a string exceeds the maximum allowed length.
+   * @param {string} param - The name of the parameter that failed validation.
+   * @param {number} max - The maximum allowed number of characters.
    */
   constructor(param, max) {
-    super(`${param} får max vara ${max} tecken.`)
+    super(`${param} must be at most ${max} characters.`)
     this.name = 'TooLongError'
   }
 }
@@ -49,23 +50,23 @@ export class TooLongError extends RangeError {
 export class InvalidPatternError extends Error {
   /**
    *
-   * @param param
+   * @param {string} param - The name of the parameter that failed validation.
    */
   constructor(param) {
-    super(`${param} är inte ett giltigt reguljärt uttryck.`)
+    super(`${param} is not a valid regular expression.`)
     this.name = 'InvalidPatternError'
   }
 }
 /**
- *
+ * Thrown when a string is empty.
  */
 export class EmptyPatternError extends Error {
   /**
-   *
-   * @param param
+   * Thrown when a pattern string is empty.
+   * @param {string} param - The name of the parameter that failed validation.
    */
   constructor(param) {
-    super(`${param} får inte vara tom.`)
+    super(`${param} must not be empty.`)
     this.name = 'EmptyPatternError'
   }
 }
@@ -74,11 +75,11 @@ export class EmptyPatternError extends Error {
  */
 export class InvalidBooleanError extends TypeError {
   /**
-   *
-   * @param param
+   * Thrown when a value is not a boolean.
+   * @param {string} param - The name of the parameter that failed validation.
    */
   constructor(param) {
-    super(`${param} måste vara boolean.`)
+    super(`${param} must be a boolean.`)
     this.name = 'InvalidBooleanError'
   }
 }
@@ -87,11 +88,11 @@ export class InvalidBooleanError extends TypeError {
  */
 export class TextTooLongError extends RangeError {
   /**
-   *
-   * @param max
+   * Thrown when the text exceeds the maximum allowed length.
+   * @param {number} max - The maximum allowed number of characters.
    */
   constructor(max) {
-    super(`Texten är för lång (max ${max} tecken).`)
+    super(`Text is too long (max ${max} characters).`)
     this.name = 'TextTooLongError'
   }
 }

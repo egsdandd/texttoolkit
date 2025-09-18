@@ -1,34 +1,30 @@
 // src/formatters/TextReverser.js
 
 /** @module formatters/TextReverser
- * Innehåller klassen TextReverser för att vända text på olika sätt.
+ * Contains the TextReverser class for reversing text in various ways.
  */
 import {
   validateNonEmptyString,
   validateMaxLength,
   validateBoolean,
-  validatePositiveInteger,
   MAX_TEXT_LENGTH
 } from '../utils/inputValidation.js'
 
 import {
-  InvalidBooleanError,
-  EmptyStringError,
-  TooLongError,
   InvalidTypeError
 } from '../utils/errors.js'
 
-/** Klass för att vända text på olika sätt.
-  * @throws {EmptyStringError} Om text är tom eller bara whitespace.
-  * @throws {TooLongError} Om text är längre än MAX_TEXT_LENGTH.
-  * @throws {InvalidTypeError} Om minLength inte är ett positivt heltal.
-  * @throws {InvalidBooleanError} Om ignoreCase inte är boolean.
+/** Class for reversing text in various ways.
+  * @throws {EmptyStringError} If text is empty or only whitespace.
+  * @throws {TooLongError} If text exceeds MAX_TEXT_LENGTH.
+  * @throws {InvalidTypeError} If minLength is not a positive integer.
+  * @throws {InvalidBooleanError} If ignoreCase is not a boolean.
   * 
  */
 export default class TextReverser {
   /**
-   *
-   * @param text
+   * Creates a new instance of TextReverser.
+   * @param {string} text The text to be reversed.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
@@ -36,18 +32,18 @@ export default class TextReverser {
     this.text = text
   }
 
-  // Vänd hela texten
   /**
-   *
+   * Reverses the entire text.
+   * @returns {string} The reversed text.
    */
   reverse() {
     if (!this.text.trim()) return ''
     return this.text.split('').reverse().join('')
   }
 
-  // Vänd varje ord för sig (men behåll ordningsföljd)
   /**
-   *
+   * Reverses each word individually (keeps word order).
+   * @returns {string} The text with each word reversed.
    */
   reverseWordsIndividually() {
     if (!this.text.trim()) return ''
@@ -57,32 +53,32 @@ export default class TextReverser {
       .join(' ')
   }
 
-  // Vänd ordningen på alla ord (men behåll varje ord intakt)
   /**
-   *
+   * Reverses the order of all words (keeps each word intact).
+   * @returns {string} The text with the word order reversed.
    */
   reverseWordOrder() {
     if (!this.text.trim()) return ''
     return this.text.split(' ').reverse().join(' ')
   }
 
-  // Vänd radordningen om texten innehåller radbrytningar
   /**
-   *
+   * Reverses the order of lines if the text contains line breaks.
+   * @returns {string} The text with the line order reversed.
    */
   reverseLines() {
     if (!this.text.trim()) return ''
     return this.text.split('\n').reverse().join('\n')
   }
 
-  // Vänd endast ord som är längre än minLength tecken
   /**
-   *
-   * @param minLength
+   * Reverses only words longer than minLength characters.
+   * @returns {string} The text with words longer than minLength reversed.
+   * @param {number} minLength - The minimum number of characters a word must have to be reversed.
    */
   reverseLongWords(minLength = 4) {
     if (!this.text.trim()) return ''
-    if (!Number.isInteger(minLength) || minLength < 1) throw new InvalidTypeError('minLength', 'ett heltal större än 0')
+    if (!Number.isInteger(minLength) || minLength < 1) throw new InvalidTypeError('minLength', 'a positive integer greater than 0')
     return this.text
       .split(' ')
       .map(word =>
@@ -91,9 +87,9 @@ export default class TextReverser {
       .join(' ')
   }
 
-  // Reversera varje mening (delar på punkt, utropstecken, frågetecken)
   /**
-   *
+   * Reverses each sentence (splits on period, exclamation mark, question mark).
+   * @returns {string} The text with each sentence reversed.
    */
   reverseEachSentence() {
     if (!this.text.trim()) return ''
@@ -102,10 +98,10 @@ export default class TextReverser {
       .join('')
   }
 
-  // Kontrollera om hela texten är ett palindrom
   /**
-   *
-   * @param ignoreCase
+   * Checks if the entire text is a palindrome.
+   * @returns {boolean} True if the text is a palindrome, otherwise false.
+   * @param {boolean} ignoreCase - Whether to ignore case when checking for palindrome.
    */
   isPalindrome(ignoreCase = true) {
     validateBoolean(ignoreCase, 'ignoreCase')
@@ -114,9 +110,9 @@ export default class TextReverser {
     return plain === plain.split('').reverse().join('')
   }
 
-  // Reverse och gör första bokstaven i varje reverserat ord till versal
   /**
-   *
+   * Reverses each word individually (keeps word order) and capitalizes the first letter of each reversed word.
+   * @returns {string} The text with each word reversed and the first letter of each word capitalized.
    */
   reverseAndCapitalizeWords() {
     if (!this.text.trim()) return ''

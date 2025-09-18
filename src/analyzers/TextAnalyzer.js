@@ -7,13 +7,6 @@ import {
   MAX_TEXT_LENGTH,
 } from '../utils/inputValidation.js'
 
-import {
-  EmptyStringError,
-  InvalidTypeError,
-  InvalidBooleanError,
-  TooLongError,
-} from '../utils/errors.js'
-
 const WORD_REGEX = /\b[a-zA-ZåäöÅÄÖ]+\b/g // Hanterar svenska och engelska bokstäver
 
 /**
@@ -21,8 +14,8 @@ const WORD_REGEX = /\b[a-zA-ZåäöÅÄÖ]+\b/g // Hanterar svenska och engelska
  */
 export default class TextAnalyzer {
   /**
-   *
-   * @param text
+   * Creates an instance of TextAnalyzer.
+   * @param {string} text The text to be analyzed.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
@@ -31,7 +24,8 @@ export default class TextAnalyzer {
   }
 
   /**
-   *
+   * Counts the number of words in the text.
+   * @returns {number} The number of words found in the text.
    */
   countWords() {
     if (!this.text.trim()) return 0
@@ -40,7 +34,8 @@ export default class TextAnalyzer {
   }
 
   /**
-   *
+   * Counts the number of sentences in the text.
+   * @returns {number} The number of sentences found in the text.
    */
   countSentences() {
     if (!this.text.trim()) return 0
@@ -49,8 +44,9 @@ export default class TextAnalyzer {
   }
 
   /**
-   *
-   * @param includeSpaces
+   * Counts the number of characters in the text.
+   * @param {boolean} includeSpaces Whether to include spaces in the character count.
+   * @returns {number} The number of characters in the text.
    */
   countCharacters(includeSpaces = true) {
     if (!this.text.trim()) return 0
@@ -61,7 +57,8 @@ export default class TextAnalyzer {
   }
 
   /**
-   *
+   * Calculates the frequency of each letter (a-z, å, ä, ö) in the text, case-insensitive.
+   * @returns {object} An object where keys are letters and values are their frequency count.
    */
   letterFrequency() {
     if (!this.text.trim()) return {}
@@ -75,7 +72,8 @@ export default class TextAnalyzer {
   }
 
   /**
-   *
+   * Finds all unique palindromic words (length > 1) in the text, case-insensitive.
+   * @returns {string[]} An array of unique palindromic words found in the text.
    */
   findPalindromes() {
     if (!this.text.trim()) return []
