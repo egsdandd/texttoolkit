@@ -10,7 +10,14 @@ import {
 const WORD_REGEX = /\b[a-zA-ZåäöÅÄÖ]+\b/g // Hanterar svenska och engelska bokstäver
 
 /**
- *
+ * A class for analyzing text content, providing methods to count words, sentences,
+ * characters, letter frequency, and find palindromes.
+ * @class TextAnalyzer 
+ * @example
+ * const analyzer = new TextAnalyzer("Madam Arora teaches malayalam")
+ * console.log(analyzer.countWords()) // Outputs: 4
+ * console.log(analyzer.findPalindromes()) // Outputs: ['madam', 'arora', 'malayalam']
+ * 
  */
 export default class TextAnalyzer {
   /**

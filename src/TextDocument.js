@@ -6,7 +6,12 @@ import TextSearcher from './searchers/TextSearcher.js'
 import TextTransformer from './transformers/TextTransformer.js'
 
 /**
- *
+ * A class representing a text document that provides various text processing functionalities
+ * such as analysis, formatting, searching, and transformation.
+ * @class TextDocument
+ * @example
+ * const doc = new TextDocument("Hello World! This is a sample text.")
+ * console.log(doc.countWords()) // Outputs: 7
  */
 export default class TextDocument {
   /**

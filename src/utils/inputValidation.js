@@ -7,51 +7,51 @@ import {
 } from './errors.js'
 
 /**
- * Kontrollera om värdet är en funktion.
+ * Check if the value is a function.
  *
- * @param {any} fn - Värdet som ska kontrolleras.
- * @returns {boolean} Returnerar true om värdet är en funktion, annars false.
+ * @param {any} fn - The value to check.
+ * @returns {boolean} Returns true if the value is a function, otherwise false.
  */
 export function isFunction(fn) {
   return typeof fn === 'function'
 }
 
 /**
- * Kontrollera om värdet är ett positivt heltal.
- * @param {number} value - Värdet som ska kontrolleras.
- * @param {string} [param] - Namnet på parametern för felmeddelanden.
+ * Check if the value is a positive integer.
+ * @param {number} value - The value to check.
+ * @param {string} [param] - The parameter name for error messages.
  */
-export function validatePositiveInteger(value, param = 'Argumentet') {
+export function validatePositiveInteger(value, param = 'Argument') {
   if (!Number.isInteger(value) || value < 1)
-    throw new InvalidTypeError(param, 'ett heltal större än 0')
+    throw new InvalidTypeError(param, 'an integer greater than 0')
 }
 /**
- * Kontrollera om värdet är en icke-tom sträng.
- * @param {any} v - Värdet som ska kontrolleras.
- * @returns {boolean} Returnerar true om värdet är en icke-tom sträng, annars false.
+ * Check if the value is a non-empty string.
+ * @param {any} v - The value to check.
+ * @returns {boolean} Returns true if the value is a non-empty string, otherwise false.
  */
 export function isNonEmptyString(v) {
   return typeof v === 'string' && v.trim().length > 0
 }
 
 /**
- * Kontrollera om värdet är en icke-tom sträng.
- * @param {any} val - Värdet som ska kontrolleras.
- * @param {string} [msgOrParam] - Namnet på parametern eller ett felmeddelande.
+ * Check if the value is a non-empty string.
+ * @param {any} val - The value to check.
+ * @param {string} [msgOrParam] - The parameter name or an error message.
  */
-export function validateNonEmptyString(val, msgOrParam = 'Värdet') {
-  if (typeof val !== 'string') throw new InvalidTypeError(msgOrParam, 'en sträng')
+export function validateNonEmptyString(val, msgOrParam = 'Value') {
+  if (typeof val !== 'string') throw new InvalidTypeError(msgOrParam, 'a string')
   if (val.trim().length === 0) throw new EmptyStringError(msgOrParam)
 }
 
 /**
- * Kontrollera om strängen inte överstiger maxlängden.
- * @param {string} val - Strängen som ska kontrolleras.
- * @param {number} max - Maximal tillåten längd.
- * @param {string} [msgOrParam] - Namnet på parametern eller ett felmeddelande.
+ * Check if the string does not exceed the maximum length.
+ * @param {string} val - The string to check.
+ * @param {number} max - The maximum allowed length.
+ * @param {string} [msgOrParam] - The parameter name or an error message.
  */
-export function validateMaxLength(val, max, msgOrParam = 'Värdet') {
-  if (typeof val !== 'string') throw new InvalidTypeError(msgOrParam, 'en sträng')
+export function validateMaxLength(val, max, msgOrParam = 'Value') {
+  if (typeof val !== 'string') throw new InvalidTypeError(msgOrParam, 'a string')
   if (val.length > max) throw new TooLongError(msgOrParam, max)
 }
 
@@ -60,7 +60,7 @@ export function validateMaxLength(val, max, msgOrParam = 'Värdet') {
  * @param {any} val - The value to validate as boolean.
  * @param {string} param - The parameter name for error messages.
  */
-export function validateBoolean(val, param = 'Argumentet') {
+export function validateBoolean(val, param = 'Argument') {
   if (typeof val !== 'boolean') throw new InvalidBooleanError(param)
 }
 
@@ -69,8 +69,8 @@ export function validateBoolean(val, param = 'Argumentet') {
  * @param {any} fn - The value to validate as a function.
  * @param {string} param - The parameter name for error messages.
  */
-export function validateFunction(fn, param = 'Argumentet') {
-  if (typeof fn !== 'function') throw new InvalidTypeError(param, 'en funktion')
+export function validateFunction(fn, param = 'Argument') {
+  if (typeof fn !== 'function') throw new InvalidTypeError(param, 'a function')
 }
 
-export const MAX_TEXT_LENGTH = 100000 // eller vad du vill
+export const MAX_TEXT_LENGTH = 100000 // or whatever you want

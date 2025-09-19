@@ -14,7 +14,7 @@ import TextSearcher from './searchers/TextSearcher.js'
 import TextTransformer from './transformers/TextTransformer.js'
 import TextReverser from './transformers/TextReverser.js'
 
-// Exportera alla relevanta klasser i ett samlat publik API
+// Export all relevant classes in a unified public API
 
 export {
   TextDocument,

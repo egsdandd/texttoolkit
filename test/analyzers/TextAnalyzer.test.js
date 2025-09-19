@@ -12,7 +12,7 @@ describe('TextAnalyzer', () => {
   });
 
   test('räknar antal ord', () => {
-    expect(analyzer.countWords()).toBe(22); // Ändra till rätt om din implementation tolkar på annat sätt
+    expect(analyzer.countWords()).toBe(22); 
   });
 
   test('räknar antal meningar', () => {
@@ -41,12 +41,3 @@ describe('TextAnalyzer', () => {
   });
 });
 
-// Förväntade resultat:
-// Antal ord: 16
-// Antal meningar: 3
-// Antal ord: 24
-// Antal meningar: 3
-// Antal tecken (inkl. mellanslag): 102
-// Antal tecken (utan mellanslag): 89
-// Bokstavsfrekvens: {a: 7, n: 3, ...}
-// Palindrom i texten: [ 'anna', 'otto', 'kajak', 'madam', 'racecar', 'bob', 'eve' ]
