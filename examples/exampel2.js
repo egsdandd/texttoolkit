@@ -1,6 +1,6 @@
 // exempel2.js
 import fs from 'fs'
-import TextDocument from '../src/TextDocument.js' // Justera importvägen vid behov
+import TextDocument from '../src/TextDocument.js'
 
 // Hämta filnamn från kommandoraden: node exempel2.js README.md
 const filename = process.argv[2]
@@ -38,7 +38,6 @@ try {
     // Example på replaceWord: byt ut "markdown" mot "MD"
     const oldWord = 'markdown'
     const newWord = 'MD'
-    // ...tidigare kod...
 
     if (doc.exists(oldWord)) {
         console.log(`Ordet "${oldWord}" hittades!`)
@@ -67,8 +66,6 @@ try {
         console.log(`Ordet "${missingWord}" hittades inte i filen!`)
     }
 
-
-    // console.log('Exempel på replaceWord:', doc.replaceWord('markdown', 'MD').slice(0, 100) + '...')
 } catch (err) {
     console.error(`Fel vid läsning av fil ${filename}:`, err.message)
     process.exit(1)

@@ -32,5 +32,25 @@ export default [
         }
       ]
     }
+  },
+    // test regler
+  {
+    files: ['test/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2021,
+      sourceType: 'module'
+    },
+    // Ev. extra plugins för test, t.ex. jest eller jsdoc
+    plugins: { jsdoc },
+    rules: {
+      semi: ['error', 'never'],
+      'no-unused-vars': 'warn',
+      quotes: ['error', 'single'],
+      eqeqeq: 'error',
+      // JSDoc, ev. mindre strikt eller justerat
+      'jsdoc/check-param-names': 'warn'
+      // Lägg till de regler du vill ha för test om de ska skilja sig
+    }
   }
 ]
+

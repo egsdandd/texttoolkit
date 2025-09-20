@@ -10,6 +10,8 @@
   },
   "scripts": {
     "lint": "eslint src/ --ext .js",
+    "linttest": "eslint test/ --ext .js",
+    "linttest:fix": "eslint test/ --ext .js --fix",
     "lint:fix": "eslint src/ --ext .js --fix",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
   },
