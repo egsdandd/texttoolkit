@@ -7,7 +7,7 @@ import {
   MAX_TEXT_LENGTH,
 } from '../utils/inputValidation.js'
 
-const WORD_REGEX = /\b[a-zA-ZåäöÅÄÖ]+\b/g // Hanterar svenska och engelska bokstäver
+const WORD_REGEX = /\b[a-zA-ZåäöÅÄÖ]+\b/g // Handles swedish and english chars
 
 /**
  * A class for analyzing text content, providing methods to count words, sentences,

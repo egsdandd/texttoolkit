@@ -1,33 +1,32 @@
-// Exempel på användning av TextDocument.js
+// Example usage of TextDocument.js
 import TextDocument from '../src/TextDocument.js'
 
-// Skapa ett dokument med vald text
-const doc = new TextDocument('Erik såg Otto och Anna paddla en kajak på ån. Madam, blev Eva av med Bob?')
+// Create a document with chosen text
+const doc = new TextDocument('Erik saw Otto and Anna paddle a kayak on the river. Madam, did Eve get rid of Bob?')
 
-// Några exempel på önskat resultat
-console.log('Originaltext:', doc.getText())
-console.log('Antal ord:', doc.countWords())
-console.log('Antal meningar:', doc.countSentences())
-console.log('Antal tecken (inkl. mellanslag):', doc.countCharacters())
-console.log('Antal tecken (utan mellanslag):', doc.countCharacters(false))
-console.log('Bokstavsfrekvens:', doc.letterFrequency())
-console.log('Palindrom i texten:', doc.findPalindromes())
+// Some examples of desired results
+console.log('Original text:', doc.getText())
+console.log('Word count:', doc.countWords())
+console.log('Sentence count:', doc.countSentences())
+console.log('Character count (including spaces):', doc.countCharacters())
+console.log('Character count (excluding spaces):', doc.countCharacters(false))
+console.log('Letter frequency:', doc.letterFrequency())
+console.log('Palindromes in text:', doc.findPalindromes())
 
-console.log('Versaler:', doc.toUpperCase())
-console.log('Gemener:', doc.toLowerCase())
+console.log('Uppercase:', doc.toUpperCase())
+console.log('Lowercase:', doc.toLowerCase())
 console.log('Capitalize:', doc.capitalizeWords())
 console.log('camelCase:', doc.toCamelCase())
 console.log('snake_case:', doc.toSnakeCase())
 console.log('Trim:', doc.trimWhitespace())
-console.log('Reverserad text:', doc.reverseText())
+console.log('Reversed text:', doc.reverseText())
 
-console.log('Finn första "Eva":', doc.findFirst('Eva'))
-console.log('Alla "en":', doc.findAll('en'))
-console.log('Finns "Bob"?', doc.exists('Bob'))
-console.log('Träffar på regex (alla versala ord):', doc.matchPattern(/\b[A-ZÅÄÖ][a-zåäö]+\b/g))
-console.log('Första index för "?":', doc.searchRegexp(/\?/))
-console.log('Transformerad text (exempel):', doc.transformText((word) => word.split('').reverse().join(''))) 
-console.log('Ordningen på orden omkastad:', doc.reverseWordOrder())
+console.log('Find first "Eve":', doc.findFirst('Eve'))
+console.log('All "the":', doc.findAll('the'))
+console.log('Exists "Bob"?', doc.exists('Bob'))
+console.log('Matches regex (all capitalized words):', doc.matchPattern(/\b[A-Z][a-z]+\b/g))
+console.log('First index for "?":', doc.searchRegexp(/\?/))
+console.log('Transformed text (example):', doc.transformText((word) => word.split('').reverse().join('')))
+console.log('Reversed word order:', doc.reverseWordOrder())
 
-console.log(doc.replaceWord('Anna', 'Stina')) 
-
+console.log(doc.replaceWord('Anna', 'Stina'))

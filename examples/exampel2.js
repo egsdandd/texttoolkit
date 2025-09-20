@@ -1,12 +1,12 @@
-// exempel2.js
+// example2.js
 import fs from 'fs'
 import TextDocument from '../src/TextDocument.js'
 
-// Hämta filnamn från kommandoraden: node exempel2.js README.md
+// Get filename from command line: node example2.js README.md
 const filename = process.argv[2]
 
 if (!filename) {
-    console.error('Ange ett filnamn som första argument, t.ex: node exempel2.js README.md')
+    console.error('Please provide a filename as the first argument, e.g.: node example2.js examplefile.md')
     process.exit(1)
 }
 
@@ -14,59 +14,58 @@ try {
     const text = fs.readFileSync(filename, 'utf8')
     const doc = new TextDocument(text)
 
-    console.log('Fil:', filename)
-    console.log('Antal ord:', doc.countWords())
-    console.log('Antal meningar:', doc.countSentences())
-    console.log('Antal tecken (inkl. mellanslag):', doc.countCharacters())
-    console.log('Antal tecken (utan mellanslag):', doc.countCharacters(false))
-    console.log('Bokstavsfrekvens:', doc.letterFrequency())
-    console.log('Palindrom i texten:', doc.findPalindromes())
-    console.log('Versaler:', doc.toUpperCase().slice(0, 100) + '...')
-    console.log('Gemener:', doc.toLowerCase().slice(0, 100) + '...')
+    console.log('File:', filename)
+    console.log('Word count:', doc.countWords())
+    console.log('Sentence count:', doc.countSentences())
+    console.log('Character count (including spaces):', doc.countCharacters())
+    console.log('Character count (excluding spaces):', doc.countCharacters(false))
+    console.log('Letter frequency:', doc.letterFrequency())
+    console.log('Palindromes in text:', doc.findPalindromes())
+    console.log('Uppercase:', doc.toUpperCase().slice(0, 100) + '...')
+    console.log('Lowercase:', doc.toLowerCase().slice(0, 100) + '...')
     console.log('Capitalize:', doc.capitalizeWords().slice(0, 100) + '...')
     console.log('camelCase:', doc.toCamelCase())
     console.log('snake_case:', doc.toSnakeCase())
-    console.log('Trim:', doc.trimWhitespace().slice(0, 100) + '...')
-    console.log('Reverserad text:', doc.reverseText().slice(0, 100) + '...')
-    console.log('Finn första "README":', doc.findFirst('README'))
-    console.log('Alla "markdown":', doc.findAll('markdown'))
-    console.log('Finns "code"?', doc.exists('code'))
-    console.log('Regexträff (alla ord med minst 10 bokstäver):', doc.matchPattern(/\b[a-zA-ZåäöÅÄÖ]{10,}\b/g))
-    console.log('Första index för "#":', doc.searchRegexp(/#/))
-    console.log('Transformerad text (vänd varje ord, max 100):', doc.transformText(word => word.split('').reverse().join('')).slice(0, 100) + '...')
-    console.log('Ordningen på orden omkastad:', doc.reverseWordOrder().slice(0, 100) + '...')
-    // Example på replaceWord: byt ut "markdown" mot "MD"
+    console.log('Trimmed:', doc.trimWhitespace().slice(0, 100) + '...')
+    console.log('Reversed text:', doc.reverseText().slice(0, 100) + '...')
+    console.log('Find first "README":', doc.findFirst('README'))
+    console.log('All "markdown":', doc.findAll('markdown'))
+    console.log('Contains "code"?', doc.exists('code'))
+    console.log('Regex match (all words with at least 10 letters):', doc.matchPattern(/\b[a-zA-ZåäöÅÄÖ]{10,}\b/g))
+    console.log('First index of "#":', doc.searchRegexp(/#/))
+    console.log('Transformed text (reverse each word, max 100):', doc.transformText(word => word.split('').reverse().join('')).slice(0, 100) + '...')
+    console.log('Reversed word order:', doc.reverseWordOrder().slice(0, 100) + '...')
+    // Example of replaceWord: replace "markdown" with "MD"
     const oldWord = 'markdown'
     const newWord = 'MD'
 
     if (doc.exists(oldWord)) {
-        console.log(`Ordet "${oldWord}" hittades!`)
+        console.log(`The word "${oldWord}" was found!`)
         const allIdx = doc.findAll(oldWord)
         const replacedText = doc.replaceWord(oldWord, newWord)
 
-        // Gör ett "snabbklipp" runt den första träffen i nya texten
+        // Create a "preview" around the first occurrence in the new text
         const pos = replacedText.indexOf(newWord)
         const start = Math.max(0, pos - 50)
         const end = Math.min(replacedText.length, pos + newWord.length + 50)
         const clip = replacedText.slice(start, end)
 
-        console.log('Alla positioner:', allIdx)
-        console.log(`Förhandsvisning runt första byte:\n...${clip}...`)
+        console.log('All positions:', allIdx)
+        console.log(`Preview around first replacement:\n...${clip}...`)
     } else {
-        console.log(`Ordet "${oldWord}" hittades inte i filen.`)
+        console.log(`The word "${oldWord}" was not found in the file.`)
     }
 
-
-    // Sök och byt ut ett ord som INTE finns
+    // Search and replace a word that does NOT exist
     const missingWord = 'surdegsgurka'
     if (doc.exists(missingWord)) {
-        console.log(`Ordet "${missingWord}" hittades – det var oväntat!`)
-        console.log('Text efter byte:', doc.replaceWord(missingWord, 'BLIXT').slice(0, 200) + '...')
+        console.log(`The word "${missingWord}" was found – that was unexpected!`)
+        console.log('Text after replacement:', doc.replaceWord(missingWord, 'BLIXT').slice(0, 200) + '...')
     } else {
-        console.log(`Ordet "${missingWord}" hittades inte i filen!`)
+        console.log(`The word "${missingWord}" was not found in the file!`)
     }
 
 } catch (err) {
-    console.error(`Fel vid läsning av fil ${filename}:`, err.message)
+    console.error(`Error reading file ${filename}:`, err.message)
     process.exit(1)
 }
