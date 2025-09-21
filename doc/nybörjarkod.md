@@ -2,7 +2,6 @@
 
 ### Bokens kapitel 1-3 går igenom vad som menas med tydliga och lättunderhållna funktioner i följande avseende:
 
-
 - Kod ska vara lättläst och lättförståelig för andra utvecklare.
 - Varje kodrad bör ha ett tydligt syfte och undvika överflödig komplexitet.
 - Välj namn på variabler, funktioner och klasser som explicit förklarar deras syfte.
