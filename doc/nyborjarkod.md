@@ -1,4 +1,6 @@
-### Kodgenomgång - Clean Code ***
+[Tillbaka till README Teacher](README.teacher.md)
+
+### Kodgenomgång - Clean Code
 
 ### Bokens kapitel 1-3 går igenom vad som menas med tydliga och lättunderhållna funktioner i följande avseende:
 
@@ -15,22 +17,19 @@
 - Följ etablerade kodstandarder för struktur, indentering och format – så blir koden mer enhetlig och lättare att underhålla.
 - Skriv tester som säkerställer att koden är robust, och refaktorera kod löpande för ökad kvalitet.
 
-För att undersöka var jag befinner mig i mitt eget kodskrivande skrev jag ihop en class så gott jag kunde (och med lite AI-hjälp) och fick ett resultat ungefär som detta:
+För att undersöka var jag befinner mig i mitt eget kodskrivande skrev jag ihop en klass så gott jag kunde (och med lite AI-hjälp) och fick ett resultat ungefär som detta:
 
 
 ```javascript
 // src/formatters/TextFormatter.js
-
 class TF {
   constructor(tekst) {
     this.t = tekst
   }
-
   // Versaler
   upp() {
     return this.t.toUpperCase() 
   }
-
   // Gemener
   low() {
     if (this.t && this.t.length > 0) {
@@ -54,7 +53,7 @@ class TF {
     }
     return out
   }
-  // inga mellanslag
+  // byt mellanslag till "_"
   snake() {
     return this.t.replaceAll(' ', '_')
   }
@@ -78,7 +77,7 @@ console.log(f.trim())
 
 ### Undersökning av koden
 
-Tittar jag då på min kod med Clean Code regler vid sidan kan man snabbt(?) konstatera:
+Tittar jag på min kod med Clean Code regler vid sidan kan man snabbt(?) konstatera:
 
 - Kod ska vara lättläst och lättförståelig för andra utvecklare.
 
@@ -162,3 +161,4 @@ snake() - Tar inte bort specialtecken, ingen lower-case!
 
 
 *
+[Tillbaka till README Teacher](README.teacher.md)

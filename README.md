@@ -8,12 +8,14 @@ _Assignment L2 in 1DV610_
 **Email:** [dd222mk@student.lnu.se](mailto:dd222mk@student.lnu.se)
 
 Documentation (README.md - this file)
+
+[For my teacher](./doc/README.teacher.md)
 ***
 
 ## 🗂️ Project Description
 
 This project is a **modular JavaScript toolkit** for advanced text analysis, formatting, search, and transformation – with support for Swedish (including å/ä/ö) and English.  
-**Main entry point:** `src/TextDocument.js` – gathers analyzers, formatters, searchers, and transformers into a unified API.
+**Main entry point:** `src/TextDocument.js` – gathers analyzers, formatters, searchers, and transformers into a unified API. This is part of a school project.
 
 All public APIs are exported via `src/index.js`.
 
