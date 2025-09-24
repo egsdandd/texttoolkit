@@ -14,4 +14,5 @@ Vad gäller reflektioner har jag fokuserat på filen Textformatter.js som jag sk
 
 [Kod innan 1DV610](nyborjarkod.md) och denna är ju inte så mycket att vara stolt över utan innehåller ju i stort sett alla fel man kan göra. Den är ju inte ens körbar. Se kommentarer i filen.
 
-[Filen TextFormatter.js](../src/formatters/TextFormatter.js) uppfyller däremot kraven och är ju så jag önskat jag skrivit den direkt.
+[Filen TextFormatter.js](../src/formatters/TextFormatter.js) uppfyller däremot kraven (tycker jag) och är ju så jag önskat jag skrivit den direkt.
+

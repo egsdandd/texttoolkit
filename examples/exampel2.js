@@ -40,21 +40,39 @@ try {
     const newWord = 'MD'
 
     if (doc.exists(oldWord)) {
-        console.log(`The word "${oldWord}" was found!`)
-        const allIdx = doc.findAll(oldWord)
-        const replacedText = doc.replaceWord(oldWord, newWord)
-
-        // Create a "preview" around the first occurrence in the new text
-        const pos = replacedText.indexOf(newWord)
-        const start = Math.max(0, pos - 50)
-        const end = Math.min(replacedText.length, pos + newWord.length + 50)
-        const clip = replacedText.slice(start, end)
-
-        console.log('All positions:', allIdx)
-        console.log(`Preview around first replacement:\n...${clip}...`)
-    } else {
-        console.log(`The word "${oldWord}" was not found in the file.`)
+    console.log(`The word "${oldWord}" was found!`)
+    const allIdx = doc.findAll(oldWord)
+    // Visa raden i originaltext där första "markdown" finns
+    const firstIdx = allIdx[0]
+    // Dela upp texten i rader
+    const lines = text.split('\n')
+    // Hitta radnummer och rad
+    let lineNumber = 0
+    let charCount = 0
+    for (let i = 0; i < lines.length; i++) {
+        charCount += lines[i].length + 1  // +1 för radslut
+        if (firstIdx < charCount) {
+            lineNumber = i
+            break
+        }
     }
+    console.log(`Original line:\n${lines[lineNumber]}`)
+
+    // Ersätt ord och visa ny rad efter byte
+    const replacedText = doc.replaceWord(oldWord, newWord)
+    const replacedLines = replacedText.split('\n')
+    console.log(`Line after replacing "${oldWord}" with "${newWord}":\n${replacedLines[lineNumber]}`)
+
+    // Preview runt första replacement (kan behållas)
+    const pos = replacedText.indexOf(newWord)
+    const start = Math.max(0, pos - 50)
+    const end = Math.min(replacedText.length, pos + newWord.length + 50)
+    const clip = replacedText.slice(start, end)
+
+    console.log('All positions:', allIdx)
+    console.log(`Preview around first replacement:\n...${clip}...`)
+}
+
 
     // Search and replace a word that does NOT exist
     const missingWord = 'surdegsgurka'

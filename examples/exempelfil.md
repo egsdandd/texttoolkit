@@ -43,6 +43,8 @@ Säkerställ att webbplatsen fungerar väl på olika enheter och skärmstorlekar
 
 ### Replace markdown med MD
 
+du skall byta ut ordet markdown mot det kortare ordet MD
+
 ### Användartest (VG-krav)
 Genomför tester med representanter från målgruppen. Samla feedback och gör nödvändiga justeringar[1][2].
 

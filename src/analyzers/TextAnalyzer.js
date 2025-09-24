@@ -32,20 +32,20 @@ export default class TextAnalyzer {
 
   /**
    * Counts the number of words in the text.
-   * @returns {number} The number of words found in the text.
+   * @returns {number} 
    */
   countWords() {
-    if (!this.text.trim()) return 0
-    const words = this.text.match(WORD_REGEX)
-    return words ? words.length : 0
+    if (this.#isEmpty()) return 0
+    return this.#extractWords().length
+
   }
 
   /**
    * Counts the number of sentences in the text.
-   * @returns {number} The number of sentences found in the text.
+   * @returns {number} 
    */
   countSentences() {
-    if (!this.text.trim()) return 0
+    if (this.#isEmpty()) return 0
     const sentences = this.text.match(/[\wåäöÅÄÖ\s,;:"'’\-–—]+\s*([.!?]|(\.\.\.))(\s|$)/g)
     return sentences ? sentences.length : 0
   }
@@ -53,10 +53,10 @@ export default class TextAnalyzer {
   /**
    * Counts the number of characters in the text.
    * @param {boolean} includeSpaces Whether to include spaces in the character count.
-   * @returns {number} The number of characters in the text.
+   * @returns {number}
    */
   countCharacters(includeSpaces = true) {
-    if (!this.text.trim()) return 0
+    if (this.#isEmpty()) return 0
     validateBoolean(includeSpaces, 'includeSpaces')
     return includeSpaces
       ? this.text.length
@@ -68,14 +68,11 @@ export default class TextAnalyzer {
    * @returns {object} An object where keys are letters and values are their frequency count.
    */
   letterFrequency() {
-    if (!this.text.trim()) return {}
-    const freq = {}
-    for (const char of this.text.toLowerCase()) {
-      if (/[a-zåäö]/.test(char)) {
-        freq[char] = (freq[char] || 0) + 1
-      }
-    }
-    return freq
+    if (this.#isEmpty()) return {}
+    const normText = this.#normalizeText()
+    const filteredLetters = Array.from(normText).filter(c => /[a-zåäö]/.test(c))
+    return this.#countOccurrences(filteredLetters)
+
   }
 
   /**
@@ -83,17 +80,56 @@ export default class TextAnalyzer {
    * @returns {string[]} An array of unique palindromic words found in the text.
    */
   findPalindromes() {
-    if (!this.text.trim()) return []
-    const words = this.text.toLowerCase().match(WORD_REGEX) || []
+    if (this.#isEmpty()) return []
+    const words = this.#extractWords()
     const palindromes = new Set()
     for (const word of words) {
-      if (
-        word.length > 1 &&
-        word === word.split('').reverse().join('')
-      ) {
+      if (this.#isPalindrome(word)) {
         palindromes.add(word)
       }
     }
     return Array.from(palindromes)
   }
+  /**
+   * Checks if a given word is a palindrome (case-insensitive, length > 1).
+   * @param {string} word The word to check for palindrome property.
+   * @returns {boolean} True if the word is a palindrome, false otherwise.
+   */
+  #isPalindrome(word) {
+    return word.length > 1 && word === word.split('').reverse().join('')
+  }
+  /**
+   * Checks if the text is empty or contains only whitespace.
+   * @returns {boolean} True if the text is empty or whitespace, false otherwise.
+   */
+  #isEmpty() {
+  return !this.text.trim()
+}
+/*
+#extractWords() {
+  return this.text
+    .toLowerCase()
+    .match(WORD_REGEX) || []
+}
+*/
+#extractWords() {
+  return this.text
+    .toLowerCase()
+    .replace(/[^\p{L}\s]/gu, '')    // tar bort alla icke-bokstäver utom whitespace
+    .split(/\s+/)
+    .filter(Boolean)
+}
+
+#countOccurrences(items) {
+  const counts = {}
+  for (const item of items) {
+    counts[item] = (counts[item] || 0) + 1
+  }
+  return counts
+}
+
+#normalizeText() {
+  return this.text.toLowerCase()
+}
+
 }

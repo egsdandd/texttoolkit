@@ -10,7 +10,36 @@ _Assignment L2 in 1DV610_
 Documentation (README.md - this file)
 
 [For my teacher](./doc/README.teacher.md)
+
 ***
+README Documents in the repo:
+
+[README.md](./README.md)
+
+[TextDocument.md](./doc/README.TextDocument.md)
+
+[TextAnalyzer.md](./doc/README.TextAnalyser.md)
+
+[TextFormatter.md](./doc/README.TextFormatters.md)
+
+[TextSearcer.md](./doc/README.TextSearcher.md)
+
+[TextTransformer.md](./doc/README.TextFormatters.md)
+
+Utils:
+
+[inputValidator.md](./doc/README.InputValidation.md)
+[error.md](./doc/README.error.md)
+
+Classes:
+
+[Class description](./doc/classer.md)
+
+[Copilot-instructions](./doc/copilot-instructions.md) for details about the module
+
+Test Output:
+
+
 
 ## 🗂️ Project Description
 
