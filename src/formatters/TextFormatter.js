@@ -5,17 +5,31 @@ import {
   validateMaxLength,
   MAX_TEXT_LENGTH
 } from '../utils/inputValidation.js'
+/*
+// Match first letter for capitalize
+const WORD_START_REGEX = /\b[a-zA-ZåäöÅÄÖ]/g
+const NON_LETTER_REGEX = /[^\wåäö\s]/gi
+const UNDERSCORE_HYPHEN_REGEX = /[_\-]+/g
+const WHITESPACE_SPLIT_REGEX = /\s+/
+*/
+// Matches the first letter of each Unicode word for capitalizeWords
+const WORD_START_REGEX = /\b\p{L}/gu
 
-const WORD_START_REGEX = /\b[a-zA-ZåäöÅÄÖ]/g // Svenska+engelska bokstäver
+// Removes any non-letter and non-space (keeps all letters, incl. åäö, é, ü, etc.)
+const NON_LETTER_REGEX = /[^\p{L}\s]/gu
+
+// Matches underscores or hyphens (used for splitting into words)
+const UNDERSCORE_HYPHEN_REGEX = /[_\-]+/g
+
+// Splits on any whitespace
+const WHITESPACE_SPLIT_REGEX = /\s+/
 
 /**
- * TextFormatter class provides various text formatting methods.
- *
+ * Text formatting utilities.
  */
 export default class TextFormatter {
   /**
-   * Creates an instance of TextFormatter.
-   * @param {string} text The text to be formatted.
+   * @param {string} text - Non-empty string with max length of 1000 characters.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
@@ -24,74 +38,76 @@ export default class TextFormatter {
   }
 
   /**
-   * Converts the text to uppercase.
-   * @returns {string} The uppercase version of the text.
+   * @returns {string}
+   * @private
    */
+  #normalizedText() {
+    return this.text.trim().toLowerCase()
+  }
+
+  /**
+   * @returns {string[]}
+   * @private
+   */
+  #splitToWords() {
+    return this.#normalizedText()
+      .replace(UNDERSCORE_HYPHEN_REGEX, ' ')
+      .replace(NON_LETTER_REGEX, '')
+      .split(WHITESPACE_SPLIT_REGEX)
+      .filter(Boolean)
+  }
+
+  /**
+   * @param {string} word - The word to capitalize.
+   * @returns {string}
+   * @private
+   */
+  #capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1)
+  }
+
+  /** @returns {string} */
   toUpperCase() {
-    if (!this.text.trim()) return ''
     return this.text.toUpperCase()
   }
 
-  /**
-   * Converts the text to lowercase.
-   * @returns {string} The lowercase version of the text.
-   */
+  /** @returns {string} */
   toLowerCase() {
-    if (!this.text.trim()) return ''
     return this.text.toLowerCase()
   }
 
-  /**
-   * Capitalizes the first letter of each word in the text.
-   * @returns {string} The text with each word capitalized.
-   */
+  /** @returns {string} */
   capitalizeWords() {
-    if (!this.text.trim()) return ''
     return this.text.replace(WORD_START_REGEX, char => char.toUpperCase())
   }
 
-  /**
-   * Converts the text to title case.
-   * @returns {string} The text with each word capitalized.
-   */
+  /** @returns {string} */
+  capitalizeWordArray() {
+    return this.getWords().map(w => this.#capitalize(w)).join(' ')
+  }
+
+  /** @returns {string} */
   toCamelCase() {
-    if (!this.text.trim()) return ''
-    const words = this.text
-      .toLowerCase()
-      .replace(/[_\-]+/g, ' ')
-      .replace(/[^\wåäöÅÄÖ\s]/g, '')
-      .split(' ')
-      .filter(Boolean)
+    const words = this.getWords()
     if (words.length === 0) return ''
     return (
       words[0] +
-      words
-        .slice(1)
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join('')
+      words.slice(1).map(w => this.#capitalize(w)).join('')
     )
   }
 
-  /**
-   * Converts the text to snake_case.
-   * @returns {string} The snake_case version of the text.
-   */
+  /** @returns {string} */
   toSnakeCase() {
-    if (!this.text.trim()) return ''
-    return this.text
-      .trim()
-      .toLowerCase()
-      .replace(/[\s\-]+/g, '_')
-      .replace(/[^\wåäöÅÄÖ_]/g, '')
+    return this.getWords().join('_')
   }
 
-  /**
-   * Trims leading and trailing whitespace from the text.
-   * @returns {string} The trimmed text.
-   */
+  /** @returns {string[]} */
+  getWords() {
+    return this.#splitToWords()
+  }
+
+  /** @returns {string} */
   trimWhitespace() {
-    validateNonEmptyString(this.text, 'Text')
     return this.text.trim()
   }
-
 }
