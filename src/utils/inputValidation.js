@@ -1,3 +1,11 @@
+/**
+ * Checks if a string is empty or contains only whitespace.
+ * @param {string} str The string to check.
+ * @returns {boolean} True if the string is empty or whitespace, false otherwise.
+ */
+export function isEmptyOrWhitespace(str) {
+  return typeof str !== 'string' || str.trim().length === 0
+}
 // src/utils/inputValidation.js
 import {
   InvalidTypeError,

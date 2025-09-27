@@ -4,186 +4,364 @@ import TextAnalyzer from './analyzers/TextAnalyzer.js'
 import TextFormatter from './formatters/TextFormatter.js'
 import TextSearcher from './searchers/TextSearcher.js'
 import TextTransformer from './transformers/TextTransformer.js'
+import TextReverser from './transformers/TextReverser.js'
 
 /**
- * A class representing a text document that provides various text processing functionalities
- * such as analysis, formatting, searching, and transformation.
+ * A comprehensive text document class providing analysis, formatting, searching, and transformation capabilities.
+ * Acts as a facade for all text processing utilities.
  * @class TextDocument
- * @example
- * const doc = new TextDocument("Hello World! This is a sample text.")
- * console.log(doc.countWords()) // Outputs: 7
  */
 export default class TextDocument {
   /**
-   * Creates a new TextDocument instance with the provided text.
-   * @param {string} text - The text content to be analyzed, formatted, searched, or transformed.
+   * Creates a new TextDocument instance.
+   * @param {string} text The text content to process.
    */
   constructor(text) {
-    this.text = typeof text === 'string' ? text : ''
-    this.analyzer = new TextAnalyzer(this.text)
-    this.formatter = new TextFormatter(this.text)
-    this.searcher = new TextSearcher(this.text)
-    this.transformer = new TextTransformer(this.text)
+    this.setText(text) // Use setter for consistent initialization
   }
 
   /**
-   * Sets the text content of the document and updates all delegates.
-   * @param {string} newText - The new text content to set for the document.
+   * Sets new text content and updates all processors.
+   * @param {string} newText The new text content.
    */
   setText(newText) {
-    this.text = typeof newText === 'string' ? newText : ''
-    this.analyzer = new TextAnalyzer(this.text)
-    this.formatter = new TextFormatter(this.text)
-    this.searcher = new TextSearcher(this.text)
-    this.transformer = new TextTransformer(this.text)
+    // Validate and normalize input
+    this.text = typeof newText === 'string' ? newText.trim() : ''
+    
+    // Only create instances if text is not empty to avoid validation errors
+    if (this.text) {
+      this.analyzer = new TextAnalyzer(this.text)
+      this.formatter = new TextFormatter(this.text)
+      this.searcher = new TextSearcher(this.text)
+      this.transformer = new TextTransformer(this.text)
+      this.reverser = new TextReverser(this.text)
+    } else {
+      // Set to null for empty text to avoid unnecessary object creation
+      this.analyzer = null
+      this.formatter = null
+      this.searcher = null
+      this.transformer = null
+      this.reverser = null
+    }
   }
 
   /**
-   * Returns the current text content of the document.
+   * Gets the current text content.
    * @returns {string} The current text content.
    */
   getText() {
     return this.text
   }
 
-  // Analys
-  
   /**
-   * Counts the number of words in the current text.
-   * @returns {number} The number of words found in the text.
+   * Checks if the document has any content.
+   * @returns {boolean} True if document is empty.
    */
-  countWords() { return this.analyzer.countWords() }
-  
-  /**
-   * Counts the number of sentences in the current text.
-   * @returns {number} The number of sentences found in the text.
-   */
-  countSentences() { return this.analyzer.countSentences() }
-  
-  /**
-   * Counts the number of characters in the current text.
-   * @param {boolean} includeSpaces - Whether to include spaces in the character count.
-   * @returns {number} The number of characters found in the text.
-   */
-  countCharacters(includeSpaces = true) { return this.analyzer.countCharacters(includeSpaces) }
-  
-  /**
-     * Returns the frequency of each letter in the current text.
-     * @returns {object} An object mapping each letter to its frequency count.
-     */
-    letterFrequency() { return this.analyzer.letterFrequency() }
-  
-    /**
-   * Finds all palindromic words in the current text.
-   * @returns {string[]} An array of palindromic words found in the text.
-   */
-  findPalindromes() { return this.analyzer.findPalindromes() }
-
-  // Formatter
-  
-  /**
-   * Converts the text to uppercase.
-   * @returns {string} The text in uppercase.
-   */
-  toUpperCase() { return this.formatter.toUpperCase() }
-  
-  /**
-   * Converts the text to lowercase.
-   * @returns {string} The text in lowercase.
-   */
-  toLowerCase() { return this.formatter.toLowerCase() }
-  
-  /**
-   * Capitalizes the first letter of each word in the text.
-   * @returns {string} The text with each word capitalized.
-   */
-  capitalizeWords() { return this.formatter.capitalizeWords() }
-  
-  /**
-   * Converts the text to camelCase format.
-   * @returns {string} The text in camelCase format.
-   */
-  toCamelCase() { return this.formatter.toCamelCase() }
-  
-  /**
-   * Converts the text to snake_case format.
-   * @returns {string} The text in snake_case format.
-   */
-  toSnakeCase() { return this.formatter.toSnakeCase() }
-  
-  /**
-   * Trims leading and trailing whitespace from the text.
-   * @returns {string} The trimmed text.
-   */
-  trimWhitespace() { return this.formatter.trimWhitespace() }
-  
-  /**
-   * Reverses the order of words in the text.
-   * @returns {string} The text with word order reversed.
-   */
-  reverseWordOrder() { return this.transformer.reverseWordOrder() }
-  
-  /**
-   * Replaces all occurrences of a word with a new word in the text.
-   * @param {string} oldWord - The word to be replaced.
-   * @param {string} newWord - The word to replace with.
-   * @returns {string} The text with the word replaced.
-   */
-  replaceWord(oldWord, newWord) { return this.transformer.replaceWord(oldWord, newWord) }
-
-  // Transformer
-  
-  /**
-   * Reverses each word in the text.
-   * @returns {string} The text with each word reversed.
-   */
-  reverseText() { 
-    return this.transformer.transformWords(word => word.split('').reverse().join(''))
-  }
-  
-  /**
-   * Applies a custom transformation function to each word in the text.
-   * @param {function(string): string} transformFn - The function to apply to each word.
-   * @returns {string} The transformed text.
-   */
-  transformText(transformFn) { 
-    return this.transformer.transformWords(transformFn)
+  isEmpty() {
+    return !this.text || this.text.length === 0
   }
 
-  // Searcher-metoder
-  
+  // Text Analysis Methods
+
   /**
-   * Finds the first occurrence of a substring in the text.
-   * @param {string} substring - The substring to search for.
-   * @returns {number} The index of the first occurrence, or -1 if not found.
+   * Counts words in the text.
+   * @returns {number} Number of words.
    */
-  findFirst(substring) { return this.searcher.findFirst(substring) }
-  
+  countWords() { 
+    return this.isEmpty() ? 0 : this.analyzer.countWords() 
+  }
+
   /**
-   * Finds all occurrences of a substring in the text.
-   * @param {string} substring - The substring to search for.
-   * @returns {number[]} An array of indices where the substring occurs.
+   * Counts sentences in the text.
+   * @returns {number} Number of sentences.
    */
-  findAll(substring) { return this.searcher.findAll(substring) }
-  
+  countSentences() { 
+    return this.isEmpty() ? 0 : this.analyzer.countSentences() 
+  }
+
   /**
-   * Checks if a substring exists in the text.
-   * @param {string} substring - The substring to check for.
-   * @returns {boolean} True if the substring exists, false otherwise.
+   * Counts characters in the text.
+   * @param {boolean} includeSpaces Whether to include spaces.
+   * @returns {number} Number of characters.
    */
-  exists(substring) { return this.searcher.exists(substring) }
-  
+  countCharacters(includeSpaces = true) { 
+    return this.isEmpty() ? 0 : this.analyzer.countCharacters(includeSpaces) 
+  }
+
   /**
-   * Matches a pattern in the text using a string or RegExp.
-   * @param {string|RegExp} pattern - The pattern to match.
-   * @returns {Array|null} The result of the match, or null if no match is found.
+   * Gets letter frequency distribution.
+   * @returns {{[key: string]: number}} Letter frequency map.
    */
-  matchPattern(pattern) { return this.searcher.matchPattern(pattern) }
-  
+  letterFrequency() { 
+    return this.isEmpty() ? {} : this.analyzer.letterFrequency() 
+  }
+
   /**
-   * Searches the text using a regular expression.
-   * @param {RegExp} regexp - The regular expression to search with.
-   * @returns {Array|null} An array of matches, or null if no matches are found.
+   * Finds palindromic words in the text.
+   * @returns {string[]} Array of palindromes.
    */
-  searchRegexp(regexp) { return this.searcher.searchRegexp(regexp) }
+  findPalindromes() { 
+    return this.isEmpty() ? [] : this.analyzer.findPalindromes() 
+  }
+
+  // Text Formatting Methods
+
+  /**
+   * Converts text to uppercase.
+   * @returns {string} Uppercase text.
+   */
+  toUpperCase() { 
+    return this.isEmpty() ? '' : this.formatter.toUpperCase() 
+  }
+
+  /**
+   * Converts text to lowercase.
+   * @returns {string} Lowercase text.
+   */
+  toLowerCase() { 
+    return this.isEmpty() ? '' : this.formatter.toLowerCase() 
+  }
+
+  /**
+   * Capitalizes each word.
+   * @returns {string} Text with capitalized words.
+   */
+  capitalizeWords() { 
+    return this.isEmpty() ? '' : this.formatter.capitalizeWords() 
+  }
+
+  /**
+   * Converts text to camelCase.
+   * @returns {string} camelCase text.
+   */
+  toCamelCase() { 
+    return this.isEmpty() ? '' : this.formatter.toCamelCase() 
+  }
+
+  /**
+   * Converts text to snake_case.
+   * @returns {string} snake_case text.
+   */
+  toSnakeCase() { 
+    return this.isEmpty() ? '' : this.formatter.toSnakeCase() 
+  }
+
+  /**
+   * Converts text to PascalCase.
+   * @returns {string} PascalCase text.
+   */
+  toPascalCase() {
+    return this.isEmpty() ? '' : this.formatter.toPascalCase()
+  }
+
+  /**
+   * Converts text to kebab-case.
+   * @returns {string} kebab-case text.
+   */
+  toKebabCase() {
+    return this.isEmpty() ? '' : this.formatter.toKebabCase()
+  }
+
+  /**
+   * Trims whitespace from text.
+   * @returns {string} Trimmed text.
+   */
+  trimWhitespace() { 
+    return this.isEmpty() ? '' : this.formatter.trimWhitespace() 
+  }
+
+  // Text Search Methods
+
+  /**
+   * Finds first occurrence of substring.
+   * @param {string} substring Substring to find.
+   * @param {boolean} caseSensitive Whether search is case-sensitive.
+   * @returns {number} Index of first occurrence or -1.
+   */
+  findFirst(substring, caseSensitive = true) { 
+    return this.isEmpty() ? -1 : this.searcher.findFirst(substring, caseSensitive) 
+  }
+
+  /**
+   * Finds all occurrences of substring.
+   * @param {string} substring Substring to find.
+   * @param {boolean} caseSensitive Whether search is case-sensitive.
+   * @returns {number[]} Array of indices.
+   */
+  findAll(substring, caseSensitive = true) { 
+    return this.isEmpty() ? [] : this.searcher.findAll(substring, caseSensitive) 
+  }
+
+  /**
+   * Checks if substring exists in text.
+   * @param {string} substring Substring to check.
+   * @param {boolean} caseSensitive Whether search is case-sensitive.
+   * @returns {boolean} True if substring exists.
+   */
+  exists(substring, caseSensitive = true) { 
+    return this.isEmpty() ? false : this.searcher.exists(substring, caseSensitive) 
+  }
+
+  /**
+   * Counts occurrences of substring.
+   * @param {string} substring Substring to count.
+   * @param {boolean} caseSensitive Whether search is case-sensitive.
+   * @returns {number} Number of occurrences.
+   */
+  count(substring, caseSensitive = true) {
+    return this.isEmpty() ? 0 : this.searcher.count(substring, caseSensitive)
+  }
+
+  /**
+   * Matches pattern in text.
+   * @param {RegExp} pattern Pattern to match.
+   * @returns {string[]} Array of matches.
+   */
+  matchPattern(pattern) { 
+    return this.isEmpty() ? [] : this.searcher.matchPattern(pattern) 
+  }
+
+  /**
+   * Searches text with regex.
+   * @param {RegExp} regexp Regular expression to search with.
+   * @returns {number} Index of first match or -1.
+   */
+  searchRegexp(regexp) { 
+    return this.isEmpty() ? -1 : this.searcher.searchRegexp(regexp) 
+  }
+
+  /**
+   * Tests if pattern matches text.
+   * @param {RegExp} pattern Pattern to test.
+   * @returns {boolean} True if pattern matches.
+   */
+  testPattern(pattern) {
+    return this.isEmpty() ? false : this.searcher.testPattern(pattern)
+  }
+
+  // Text Transformation Methods
+
+  /**
+   * Applies transformation function to each word.
+   * @param {Function} transformFn Transformation function.
+   * @returns {string} Transformed text.
+   */
+  transformWords(transformFn) { 
+    return this.isEmpty() ? '' : this.transformer.transformWords(transformFn) 
+  }
+
+  /**
+   * Reverses word order.
+   * @returns {string} Text with reversed word order.
+   */
+  reverseWordOrder() { 
+    return this.isEmpty() ? '' : this.transformer.reverseWordOrder() 
+  }
+
+  /**
+   * Replaces word with another word.
+   * @param {string} oldWord Word to replace.
+   * @param {string} newWord Replacement word.
+   * @param {boolean} caseSensitive Whether replacement is case-sensitive.
+   * @returns {string} Text with word replaced.
+   */
+  replaceWord(oldWord, newWord, caseSensitive = true) { 
+    return this.isEmpty() ? '' : this.transformer.replaceWord(oldWord, newWord, caseSensitive) 
+  }
+
+  /**
+   * Removes specified words from text.
+   * @param {string[]} wordsToRemove Words to remove.
+   * @param {boolean} caseSensitive Whether removal is case-sensitive.
+   * @returns {string} Text with words removed.
+   */
+  removeWords(wordsToRemove, caseSensitive = true) {
+    return this.isEmpty() ? '' : this.transformer.removeWords(wordsToRemove, caseSensitive)
+  }
+
+  /**
+   * Sorts words alphabetically.
+   * @param {boolean} descending Whether to sort in descending order.
+   * @returns {string} Text with words sorted.
+   */
+  sortWords(descending = false) {
+    return this.isEmpty() ? '' : this.transformer.sortWords(descending)
+  }
+
+  /**
+   * Shuffles words randomly.
+   * @returns {string} Text with words in random order.
+   */
+  shuffleWords() {
+    return this.isEmpty() ? '' : this.transformer.shuffleWords()
+  }
+
+  /**
+   * Reverses each word in the text (legacy method).
+   * @returns {string} Text with each word reversed.
+   */
+  reverseText() {
+    return this.reverseWordsIndividually()
+  }
+
+  /**
+   * Applies custom transformation function to each word (legacy method).
+   * @param {Function} transformFn Function to apply to each word.
+   * @returns {string} Transformed text.
+   */
+  transformText(transformFn) {
+    return this.transformWords(transformFn)
+  }
+
+  // Text Reversal Methods
+
+  /**
+   * Reverses entire text.
+   * @returns {string} Text with all characters reversed.
+   */
+  reverse() {
+    return this.isEmpty() ? '' : this.reverser.reverse()
+  }
+
+  /**
+   * Reverses each word individually.
+   * @returns {string} Text with each word reversed.
+   */
+  reverseWordsIndividually() {
+    return this.isEmpty() ? '' : this.reverser.reverseWordsIndividually()
+  }
+
+  /**
+   * Reverses line order.
+   * @returns {string} Text with lines in reverse order.
+   */
+  reverseLines() {
+    return this.isEmpty() ? '' : this.reverser.reverseLines()
+  }
+
+  /**
+   * Checks if text is a palindrome.
+   * @param {boolean} ignoreCase Whether to ignore case.
+   * @param {boolean} ignoreSpaces Whether to ignore spaces and punctuation.
+   * @returns {boolean} True if text is palindrome.
+   */
+  isPalindrome(ignoreCase = true, ignoreSpaces = false) {
+    return this.isEmpty() ? false : this.reverser.isPalindrome(ignoreCase, ignoreSpaces)
+  }
+
+  // Utility Methods
+
+  /**
+   * Gets basic text statistics.
+   * @returns {object} Object containing word count, sentence count, and character count.
+   */
+  getStats() {
+    return {
+      words: this.countWords(),
+      sentences: this.countSentences(),
+      characters: this.countCharacters(true),
+      charactersNoSpaces: this.countCharacters(false),
+      isEmpty: this.isEmpty()
+    }
+  }
 }

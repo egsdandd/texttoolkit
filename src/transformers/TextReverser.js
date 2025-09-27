@@ -1,127 +1,195 @@
-// src/formatters/TextReverser.js
+// src/transformers/TextReverser.js
 
-/** @module formatters/TextReverser
- * Contains the TextReverser class for reversing text in various ways.
- */
 import {
   validateNonEmptyString,
   validateMaxLength,
   validateBoolean,
   MAX_TEXT_LENGTH
 } from '../utils/inputValidation.js'
+import { InvalidTypeError } from '../utils/errors.js'
 
-import {
-  InvalidTypeError
-} from '../utils/errors.js'
+// Regex constants for better maintainability
+const SENTENCE_DELIMITERS = /([.!?])/
+const WORD_BOUNDARIES = /\s+/
 
-/** Class for reversing text in various ways.
-  * @throws {EmptyStringError} If text is empty or only whitespace.
-  * @throws {TooLongError} If text exceeds MAX_TEXT_LENGTH.
-  * @throws {InvalidTypeError} If minLength is not a positive integer.
-  * @throws {InvalidBooleanError} If ignoreCase is not a boolean.
-  * 
+/**
+ * Utilities for reversing text in various ways with Unicode support.
+ * @class TextReverser
  */
 export default class TextReverser {
   /**
-   * Creates a new instance of TextReverser.
-   * @param {string} text The text to be reversed.
+   * Creates a new TextReverser instance.
+   * @param {string} text The text to reverse.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
     validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
-    this.text = text
+    this.text = text.normalize('NFC')
+    
+    // Cache for expensive operations
+    this._reversedCache = null
+    this._wordsCache = null
+    this._linesCache = null
   }
 
   /**
-   * Reverses the entire text.
-   * @returns {string} The reversed text.
+   * Reverses the entire text character by character.
+   * @returns {string} The text with all characters reversed.
    */
   reverse() {
-    if (!this.text.trim()) return ''
-    return this.text.split('').reverse().join('')
+    if (this._reversedCache === null) {
+      this._reversedCache = this.#reverseString(this.text)
+    }
+    return this._reversedCache
   }
 
   /**
-   * Reverses each word individually (keeps word order).
-   * @returns {string} The text with each word reversed.
+   * Reverses each word individually while preserving word positions.
+   * @returns {string} Text with each word reversed but in original order.
    */
   reverseWordsIndividually() {
-    if (!this.text.trim()) return ''
-    return this.text
-      .split(' ')
-      .map(word => word.split('').reverse().join(''))
+    return this.#getWords()
+      .map(word => this.#reverseString(word))
       .join(' ')
   }
 
   /**
-   * Reverses the order of all words (keeps each word intact).
-   * @returns {string} The text with the word order reversed.
+   * Reverses the order of words while keeping each word intact.
+   * @returns {string} Text with word order reversed.
    */
   reverseWordOrder() {
-    if (!this.text.trim()) return ''
-    return this.text.split(' ').reverse().join(' ')
+    return this.#getWords().reverse().join(' ')
   }
 
   /**
-   * Reverses the order of lines if the text contains line breaks.
-   * @returns {string} The text with the line order reversed.
+   * Reverses the order of lines in multi-line text.
+   * @returns {string} Text with line order reversed.
    */
   reverseLines() {
-    if (!this.text.trim()) return ''
-    return this.text.split('\n').reverse().join('\n')
+    return this.#getLines().reverse().join('\n')
   }
 
   /**
-   * Reverses only words longer than minLength characters.
-   * @returns {string} The text with words longer than minLength reversed.
-   * @param {number} minLength - The minimum number of characters a word must have to be reversed.
+   * Reverses only words that meet a minimum length requirement.
+   * @param {number} minLength Minimum number of characters required to reverse a word.
+   * @returns {string} Text with long words reversed.
    */
   reverseLongWords(minLength = 4) {
-    if (!this.text.trim()) return ''
-    if (!Number.isInteger(minLength) || minLength < 1) throw new InvalidTypeError('minLength', 'a positive integer greater than 0')
-    return this.text
-      .split(' ')
-      .map(word =>
-        word.length >= minLength ? word.split('').reverse().join('') : word
-      )
+    if (!Number.isInteger(minLength) || minLength < 1) {
+      throw new InvalidTypeError('minLength', 'a positive integer greater than 0')
+    }
+    
+    return this.#getWords()
+      .map(word => word.length >= minLength ? this.#reverseString(word) : word)
       .join(' ')
   }
 
   /**
-   * Reverses each sentence (splits on period, exclamation mark, question mark).
-   * @returns {string} The text with each sentence reversed.
+   * Reverses each sentence individually while preserving punctuation.
+   * @returns {string} Text with each sentence reversed but punctuation preserved.
    */
   reverseEachSentence() {
-    if (!this.text.trim()) return ''
-    return this.text.split(/([.!?])/)
-      .map(part => /[.!?]/.test(part) ? part : part.trim().split('').reverse().join(''))
+    return this.text.split(SENTENCE_DELIMITERS)
+      .map(part => SENTENCE_DELIMITERS.test(part) ? part : this.#reverseString(part.trim()))
       .join('')
   }
 
   /**
-   * Checks if the entire text is a palindrome.
-   * @returns {boolean} True if the text is a palindrome, otherwise false.
-   * @param {boolean} ignoreCase - Whether to ignore case when checking for palindrome.
+   * Checks if the text is a palindrome.
+   * @param {boolean} ignoreCase Whether to ignore case differences.
+   * @param {boolean} ignoreSpaces Whether to ignore spaces and punctuation.
+   * @returns {boolean} True if the text is a palindrome.
    */
-  isPalindrome(ignoreCase = true) {
+  isPalindrome(ignoreCase = true, ignoreSpaces = false) {
     validateBoolean(ignoreCase, 'ignoreCase')
-    if (!this.text.trim()) return false
-    const plain = ignoreCase ? this.text.toLowerCase() : this.text
-    return plain === plain.split('').reverse().join('')
+    validateBoolean(ignoreSpaces, 'ignoreSpaces')
+    
+    let processedText = ignoreCase ? this.text.toLowerCase() : this.text
+    
+    if (ignoreSpaces) {
+      processedText = processedText.replace(/[^\p{L}\p{N}]/gu, '')
+    }
+    
+    return processedText === this.#reverseString(processedText)
   }
 
   /**
-   * Reverses each word individually (keeps word order) and capitalizes the first letter of each reversed word.
-   * @returns {string} The text with each word reversed and the first letter of each word capitalized.
+   * Reverses each word and capitalizes the first letter.
+   * @returns {string} Text with words reversed and capitalized.
    */
   reverseAndCapitalizeWords() {
-    if (!this.text.trim()) return ''
-    return this.text.split(' ')
+    return this.#getWords()
       .map(word => {
-        const rev = word.split('').reverse().join('')
-        return rev.charAt(0).toUpperCase() + rev.slice(1)
+        const reversed = this.#reverseString(word)
+        return this.#capitalize(reversed)
       })
       .join(' ')
   }
 
+  /**
+   * Reverses alternating words (1st, 3rd, 5th, etc.).
+   * @returns {string} Text with every other word reversed.
+   */
+  reverseAlternatingWords() {
+    return this.#getWords()
+      .map((word, index) => index % 2 === 0 ? this.#reverseString(word) : word)
+      .join(' ')
+  }
+
+  /**
+   * Creates a mirror effect by appending the reversed text.
+   * @param {string} separator String to insert between original and reversed text.
+   * @returns {string} Original text plus separator plus reversed text.
+   */
+  mirror(separator = ' ') {
+    return this.text + separator + this.reverse()
+  }
+
+  // Private methods
+
+  /**
+   * Reverses a string with proper Unicode handling.
+   * @private
+   * @param {string} str String to reverse.
+   * @returns {string} Reversed string.
+   */
+  #reverseString(str) {
+    // Use Array.from to handle Unicode surrogate pairs correctly
+    return Array.from(str).reverse().join('')
+  }
+
+  /**
+   * Gets words from text with caching, using intelligent word splitting.
+   * @private
+   * @returns {string[]} Array of words.
+   */
+  #getWords() {
+    if (this._wordsCache === null) {
+      this._wordsCache = this.text.trim().split(WORD_BOUNDARIES).filter(Boolean)
+    }
+    return this._wordsCache
+  }
+
+  /**
+   * Gets lines from text with caching.
+   * @private
+   * @returns {string[]} Array of lines.
+   */
+  #getLines() {
+    if (this._linesCache === null) {
+      this._linesCache = this.text.split('\n')
+    }
+    return this._linesCache
+  }
+
+  /**
+   * Capitalizes the first character of a string.
+   * @private
+   * @param {string} str String to capitalize.
+   * @returns {string} String with first character capitalized.
+   */
+  #capitalize(str) {
+    if (!str) return str
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+  }
 }

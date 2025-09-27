@@ -4,6 +4,7 @@ describe('TextFormatter', () => {
   let formatter
 
   beforeEach(() => {
+    // Standard ASCII spaces only
     formatter = new TextFormatter('  HeLlo World-Example_text  ')
   })
 
@@ -16,7 +17,7 @@ describe('TextFormatter', () => {
   })
 
   test('capitalizes words', () => {
-    expect(formatter.capitalizeWords()).toBe('  HeLlo World-Example_text  ')
+    expect(formatter.capitalizeWords()).toBe('  Hello World-Example_Text  ')
   })
 
   test('converts to camelCase', () => {
@@ -30,7 +31,6 @@ describe('TextFormatter', () => {
   test('trims whitespace', () => {
     expect(formatter.trimWhitespace()).toBe('HeLlo World-Example_text')
   })
-
 
   test('handles Swedish letters and symbols', () => {
     const f = new TextFormatter('åäö! hello')
@@ -63,4 +63,24 @@ describe('TextFormatter', () => {
     expect(() => new TextFormatter('')).toThrow()
   })
 
+  // --- Unicode edge-case tests ---
+  test('getWords handles Unicode letters', () => {
+    const f = new TextFormatter('åäö Éclair blåbär İstanbul')
+    expect(f.getWords()).toEqual(['åäö', 'éclair', 'blåbär', 'istanbul'])
+  })
+
+  test('capitalizeWords handles mixed scripts', () => {
+    const f = new TextFormatter('éclair blåbär istanbul مَرحَبا мир')
+    expect(f.capitalizeWords()).toBe('Éclair Blåbär Istanbul مَرحَبا Мир')
+  })
+
+  test('toCamelCase is Unicode-clean', () => {
+    const f = new TextFormatter('éclair blåbär istanbul')
+    expect(f.toCamelCase()).toBe('éclairBlåbärIstanbul')
+  })
+
+  test('toSnakeCase joins Unicode words', () => {
+    const f = new TextFormatter('éclair blåbär istanbul')
+    expect(f.toSnakeCase()).toBe('éclair_blåbär_istanbul')
+  })
 })
