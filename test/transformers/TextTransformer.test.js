@@ -40,12 +40,13 @@ describe('TextTransformer', () => {
     expect(transformer.replaceWord('Anna', 'Eva')).toBe('Eva och Otto paddlar kajak')
   })
 
-  test('replaceWord kräver två icke-tomma argument', () => {
+  test('replaceWord kräver icke-tomt oldWord och giltiga argument', () => {
     expect(() => transformer.replaceWord('', 'nytt')).toThrow(EmptyStringError)
-    expect(() => transformer.replaceWord('gammalt', '')).toThrow(EmptyStringError)
     expect(() => transformer.replaceWord()).toThrow(InvalidTypeError)
     expect(() => transformer.replaceWord(null, 'x')).toThrow(InvalidTypeError)
     expect(() => transformer.replaceWord('x', null)).toThrow(InvalidTypeError)
+    // Tom sträng som newWord är tillåtet
+    expect(() => transformer.replaceWord('gammalt', '')).not.toThrow()
   })
 
   test('tom text i metoder ger alltid tom sträng', () => {

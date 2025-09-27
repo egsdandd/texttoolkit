@@ -49,9 +49,57 @@ describe('TextDocument', () => {
         expect(typeof doc.trimWhitespace()).toBe('string')
     })
 
+    test('toPascalCase returnerar PascalCase', () => {
+        expect(doc.toPascalCase()).toBe('ErikSågOttoOchAnnaPaddlaEnKajakPåÅnMadamBlevEvaAvMedBob')
+    })
+
+    test('toKebabCase returnerar kebab-case', () => {
+        expect(doc.toKebabCase()).toBe('erik-såg-otto-och-anna-paddla-en-kajak-på-ån-madam-blev-eva-av-med-bob')
+    })
+
     test('reverseWordOrder() och reverseText() returnerar sträng', () => {
         expect(typeof doc.reverseWordOrder()).toBe('string')
         expect(typeof doc.reverseText()).toBe('string')
+    })
+
+    test('removeWords tar bort angivna ord', () => {
+        const removed = doc.removeWords(['Otto', 'Anna', 'kajak'])
+        expect(removed.includes('Otto')).toBe(false)
+        expect(removed.includes('Anna')).toBe(false)
+        expect(removed.includes('kajak')).toBe(false)
+    })
+
+    test('sortWords sorterar ord alfabetiskt', () => {
+        const sorted = doc.sortWords()
+        const normalize = arr => arr.map(w => w.replace(/[^\p{L}\p{N}]/gu, ''))
+        const sortedWords = normalize(sorted.split(/\s+/)).sort()
+        const expectedWords = normalize(doc.getText().split(/\s+/)).sort()
+        expect(sortedWords).toEqual(expectedWords)
+    })
+
+    test('shuffleWords returnerar en sträng med samma ord i annan ordning', () => {
+        const shuffled = doc.shuffleWords()
+        expect(typeof shuffled).toBe('string')
+        const originalWords = doc.getText().split(/\s+/)
+        const shuffledWords = shuffled.split(/\s+/)
+        expect(shuffledWords.sort()).toEqual(originalWords.sort())
+    })
+    test('reverseLines vänder radordning', () => {
+        const multiLineDoc = new TextDocument('rad1\nrad2\nrad3')
+        expect(multiLineDoc.reverseLines()).toBe('rad3\nrad2\nrad1')
+    })
+    test('isPalindrome känner igen palindrom', () => {
+        expect(new TextDocument('abba').isPalindrome()).toBe(true)
+        expect(new TextDocument('AbBa').isPalindrome(false)).toBe(false)
+    })
+    test('getStats returnerar statistikobjekt', () => {
+        const stats = doc.getStats()
+        expect(stats).toHaveProperty('words')
+        expect(stats).toHaveProperty('sentences')
+        expect(stats).toHaveProperty('characters')
+        expect(stats).toHaveProperty('charactersNoSpaces')
+        expect(stats).toHaveProperty('isEmpty')
+        expect(stats.words).toBe(doc.countWords())
     })
 
     test('replaceWord() byter ut ord korrekt', () => {

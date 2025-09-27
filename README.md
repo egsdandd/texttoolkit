@@ -33,13 +33,14 @@ Utils:
 
 Classes:
 
-[Class description](./doc/classer.md)
+ - [Class description](./doc/classer.md)
 
-[Copilot-instructions](./doc/copilot-instructions.md) for details about the module
+ - [Copilot-instructions](./doc/copilot-instructions.md) for details about the module
 
 Test Output:
 
-
+- [Test Coverage Summary](./doc/README.Testresult.md)
+- [Detailed Test Report](./doc/README.DetailedTestReport.md)
 
 ## 🗂️ Project Description
 
@@ -221,4 +222,6 @@ MIT License
 ## 💬 Communication \& Questions
 
 For questions or suggestions – update this README and notify the repo owners.
+
+
 

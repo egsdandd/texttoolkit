@@ -7,6 +7,7 @@ import {
   validateFunction,
   MAX_TEXT_LENGTH
 } from '../utils/inputValidation.js'
+import { InvalidTypeError } from '../utils/errors.js'
 
 // Regex constants
 const WORD_BOUNDARIES = /\s+/
@@ -60,7 +61,8 @@ export default class TextTransformer {
    */
   replaceWord(oldWord, newWord, caseSensitive = true) {
     validateNonEmptyString(oldWord, 'oldWord')
-    validateNonEmptyString(newWord, 'newWord')
+    // Tillåt tom sträng för newWord (används av removeWords)
+    if (typeof newWord !== 'string') throw new InvalidTypeError('newWord', 'a string')
     if (isEmptyOrWhitespace(this.text)) return ''
 
     const flags = caseSensitive ? 'gu' : 'gui'
@@ -88,7 +90,6 @@ export default class TextTransformer {
         result = new TextTransformer(result).replaceWord(word, '', caseSensitive)
       }
     }
-
     // Clean up extra spaces
     return result.replace(/\s+/g, ' ').trim()
   }
