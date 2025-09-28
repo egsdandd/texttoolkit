@@ -1,3 +1,4 @@
+[Tillbaka till README](../README.md)
 Hej
 
 Jag har säkert inte gjort denna uppgiften enligt alla de instruktioner vi fått men jag har försökt så gott jag kunnat.
@@ -10,13 +11,17 @@ Jag har använt min AI till ganska stor utsträckning så koden har nog blivit g
 
 Jag har jobbat mycket med clean-code reglerna så där känns det som jag har kommit en bra bit på vägen. 
 
-Vad gäller reflektioner har jag fokuserat på filen Textformatter.js som jag skrev ihop själv för att efter det var gjort kontrollera vilka misstag jag gör. Nu fick jag ju tänka efter lite hur man skulle skrivit innan föreläsningar och bokläsning av kap 1-3 men jag tror den visar ganska ok var jag stod innan kursen då jag ca 1978 startade som Fortan/Assembler programmerare
+Vad gäller reflektioner har jag fokuserat på filen Textformatter.js som jag skrev ihop själv för att efter det var gjort kontrollera vilka misstag jag gör. Nu fick jag ju tänka efter lite hur man skulle skrivit innan föreläsningar och bokläsning av kap 1-3 men jag tror den visar ganska ok var jag stod innan kursen då jag ca 1978 startade som Fortan/Assembler programmerare.
+
+
 
 [Kod innan 1DV610](nyborjarkod.md) och den är ju inte så mycket att vara stolt över utan innehåller ju i stort sett alla fel man kan göra. Den är ju inte ens körbar. Se kommentarer i filen.
 
 [Filen TextFormatter.js](../src/formatters/TextFormatter.js) uppfyller däremot kraven (tycker jag) och är ju så jag önskat jag skrivit den direkt. Samma gäller för de andra kodfilerna
 
 Strul på vägen:
+
+Jag skrev allt på svenska först och sedan lät jag min AI översätta och fixa till, hoppas jag fick med allt.
 
 1. Jag hade problem med att strängar kan innehålle mellanslag och andra special tecken och det tog ett tag att reda ut det.
 2. Jag hade problem med att få regex att fungera som jag ville. Till slut föll allt på plats och jag fick till det men jag gick över till unicode-hantering.

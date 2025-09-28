@@ -61,7 +61,7 @@ export default class TextTransformer {
    */
   replaceWord(oldWord, newWord, caseSensitive = true) {
     validateNonEmptyString(oldWord, 'oldWord')
-    // Tillåt tom sträng för newWord (används av removeWords)
+    // Allow empty string for newWord (used by removeWords)
     if (typeof newWord !== 'string') throw new InvalidTypeError('newWord', 'a string')
     if (isEmptyOrWhitespace(this.text)) return ''
 
@@ -83,16 +83,18 @@ export default class TextTransformer {
       return this.text
     }
     if (isEmptyOrWhitespace(this.text)) return ''
-
     let result = this.text
     for (const word of wordsToRemove) {
       if (typeof word === 'string' && word.trim()) {
         result = new TextTransformer(result).replaceWord(word, '', caseSensitive)
       }
     }
-    // Clean up extra spaces
-    return result.replace(/\s+/g, ' ').trim()
+    return result
+      .replace(/\s+/g, ' ')
+      .replace(/\s+([,.!?;:])/g, '$1') // Ta bort space före skiljetecken
+      .trim()
   }
+
 
   /**
    * Filters words based on a predicate function.
@@ -127,37 +129,40 @@ export default class TextTransformer {
    */
   sortWords(descending = false) {
     if (isEmptyOrWhitespace(this.text)) return ''
-
-    const words = this.#getWords()
+    const words = TextTransformer.extractWords(this.text)
     words.sort((a, b) => {
       const comparison = a.toLowerCase().localeCompare(b.toLowerCase())
       return descending ? -comparison : comparison
     })
-
     return words.join(' ')
   }
 
+
+
   /**
-   * Shuffles the order of words randomly.
-   * @returns {string} Text with words in random order.
+   * Extracts words from the given text using Unicode-aware regex.
+   * @param {string} text The text to extract words from.
+   * @returns {string[]} Array of extracted words.
+   */
+  static extractWords(text) {
+    return (text.match(/\p{L}+(?:-\p{L}+)?/gu) || [])
+  }
+
+  /**
+   * Shuffles the order of words in the text randomly.
+   * @returns {string} Text with words shuffled.
    */
   shuffleWords() {
     if (isEmptyOrWhitespace(this.text)) return ''
-
-    const words = [...this.#getWords()] // Create a copy
-
-    // Fisher-Yates shuffle algorithm
+    const words = TextTransformer.extractWords(this.text)
     for (let i = words.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-        ;[words[i], words[j]] = [words[j], words[i]]
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]]
     }
-
     return words.join(' ')
   }
 
   // Private methods
-
-  // The #isEmpty method has been removed and replaced with isEmptyOrWhitespace.
 
   /**
    * Gets words from text with caching and intelligent splitting.

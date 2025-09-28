@@ -1,3 +1,5 @@
+[Back to README.md](../README.md)
+
 # GitHub Copilot Instructions for texttoolkit
 
 ## Purpose

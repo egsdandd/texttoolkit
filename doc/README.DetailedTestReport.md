@@ -1,10 +1,12 @@
+[Back to README.md](../README.md)
+
 # Detailed Test Report
 
 ## Test Run Summary
 - Date: 2025-09-27
 - Command: `npm test`
-- Node version: vXX.XX.X
-- Jest version: XX.X.X
+- Node version: v24.8.0
+- Jest version: v29.7.0
 - All test suites: 7
 - Passed: 7
 - Failed: 0

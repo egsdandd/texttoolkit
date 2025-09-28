@@ -1,3 +1,5 @@
+[Back to README.md](../README.md)
+
 # TextDocument
 
 TextDocument is a comprehensive ES6 class providing unified access to advanced text analysis, formatting, searching, transformation, and reversal features. It aggregates functionality from dedicated analyzer, formatter, searcher, transformer, and reverser components, all accessible from a single API entry point with robust Unicode support.
