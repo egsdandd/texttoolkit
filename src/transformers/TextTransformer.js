@@ -9,74 +9,63 @@ import {
 } from '../utils/inputValidation.js'
 import { InvalidTypeError } from '../utils/errors.js'
 
-// Regex constants
-const WORD_BOUNDARIES = /\s+/
-
 /**
- * Word-level text transformation utilities with Unicode support.
- * @class TextTransformer
+ * Utility for word-level text transformation (Unicode support).
  */
 export default class TextTransformer {
   /**
-   * Creates a new TextTransformer instance.
-   * @param {string} text Text to transform.
+   * Create a new instance.
+   * @param {string} text The text to transform.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
     validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
     this.text = text.normalize('NFC')
-
-    // Cache for expensive operations
-    this._wordsCache = null
   }
 
   /**
-   * Applies a transformation function to each word.
-   * @param {Function} transformFn Function that takes a word and returns transformed word.
-   * @returns {string} Text with transformation applied to each word.
+   * Apply a function to every word.
+   * @param {Function} transformFn - function(word) => transformedWord
+   * @returns {string}
    */
   transformWords(transformFn) {
     validateFunction(transformFn, 'transformFn')
     if (isEmptyOrWhitespace(this.text)) return ''
-
-    return this.#getWords().map(transformFn).join(' ')
+    return TextTransformer.extractWords(this.text).map(transformFn).join(' ')
   }
 
   /**
-   * Reverses the order of words while keeping each word intact.
-   * @returns {string} Text with word order reversed.
+   * Reverse the order of the words.
+   * @returns {string}
    */
   reverseWordOrder() {
     if (isEmptyOrWhitespace(this.text)) return ''
-    return this.#getWords().reverse().join(' ')
+    return TextTransformer.extractWords(this.text).reverse().join(' ')
   }
 
   /**
-   * Replaces all occurrences of a word with another word.
-   * Uses word boundaries to avoid partial matches.
-   * @param {string} oldWord Word to replace.
-   * @param {string} newWord Replacement word.
-   * @param {boolean} caseSensitive Whether replacement should be case-sensitive.
-   * @returns {string} Text with words replaced.
+   * Replace all occurrences of a word using Unicode-aware word boundaries.
+   * @param {string} oldWord - word to replace
+   * @param {string} newWord - replacement word
+   * @param {boolean} [caseSensitive=true] - whether the match is case-sensitive
+   * @returns {string}
    */
   replaceWord(oldWord, newWord, caseSensitive = true) {
     validateNonEmptyString(oldWord, 'oldWord')
-    // Allow empty string for newWord (used by removeWords)
     if (typeof newWord !== 'string') throw new InvalidTypeError('newWord', 'a string')
     if (isEmptyOrWhitespace(this.text)) return ''
-
     const flags = caseSensitive ? 'gu' : 'gui'
-    const escapedOldWord = this.#escapeRegexChars(oldWord)
-    const regex = new RegExp(`\\b${escapedOldWord}\\b`, flags)
-
+    const escapedOldWord = TextTransformer.escapeRegexChars(oldWord)
+    // Unicode-aware word boundaries using lookarounds for letters
+    const regex = new RegExp(`(?<=^|\\P{L})${escapedOldWord}(?=\\P{L}|$)`, flags)
     return this.text.replace(regex, newWord)
   }
 
   /**
-   * Removes all occurrences of specified words from the text.
-   * @param {string[]} wordsToRemove Array of words to remove.
-   * @param {boolean} caseSensitive Whether removal should be case-sensitive.
-   * @returns {string} Text with specified words removed.
+   * Remove specified words from the text.
+   * @param {string[]} wordsToRemove - array of words to remove
+   * @param {boolean} [caseSensitive=true] - whether the removal is case-sensitive
+   * @returns {string}
    */
   removeWords(wordsToRemove, caseSensitive = true) {
     if (!Array.isArray(wordsToRemove) || wordsToRemove.length === 0) {
@@ -89,100 +78,82 @@ export default class TextTransformer {
         result = new TextTransformer(result).replaceWord(word, '', caseSensitive)
       }
     }
+    // Remove extra whitespace and spaces before punctuation
     return result
       .replace(/\s+/g, ' ')
-      .replace(/\s+([,.!?;:])/g, '$1') // Ta bort space före skiljetecken
+      .replace(/\s+([,.!?;:])/g, '$1')
       .trim()
   }
 
-
   /**
-   * Filters words based on a predicate function.
-   * @param {Function} predicate Function that returns true for words to keep.
-   * @returns {string} Text containing only words that pass the predicate.
+   * Filter words by a predicate.
+   * @param {Function} predicate - function(word) => boolean
+   * @returns {string}
    */
   filterWords(predicate) {
     validateFunction(predicate, 'predicate')
     if (isEmptyOrWhitespace(this.text)) return ''
-
-    return this.#getWords().filter(predicate).join(' ')
+    return TextTransformer.extractWords(this.text).filter(predicate).join(' ')
   }
 
   /**
-   * Transforms words based on their position (index).
-   * @param {Function} transformFn Function that takes (word, index) and returns transformed word.
-   * @returns {string} Text with position-based transformations applied.
+   * Transform words based on position.
+   * @param {Function} transformFn - function(word, index)
+   * @returns {string}
    */
   transformWordsByPosition(transformFn) {
     validateFunction(transformFn, 'transformFn')
     if (isEmptyOrWhitespace(this.text)) return ''
-
-    return this.#getWords()
-      .map((word, index) => transformFn(word, index))
+    return TextTransformer.extractWords(this.text)
+      .map((word, idx) => transformFn(word, idx))
       .join(' ')
   }
 
   /**
-   * Sorts words alphabetically while preserving their original casing.
-   * @param {boolean} descending Whether to sort in descending order.
-   * @returns {string} Text with words sorted alphabetically.
+   * Sort words alphabetically.
+   * @param {boolean} [descending=false] - Sort in descending order if true.
+   * @returns {string}
    */
   sortWords(descending = false) {
     if (isEmptyOrWhitespace(this.text)) return ''
     const words = TextTransformer.extractWords(this.text)
     words.sort((a, b) => {
-      const comparison = a.toLowerCase().localeCompare(b.toLowerCase())
-      return descending ? -comparison : comparison
+      const cmp = a.toLowerCase().localeCompare(b.toLowerCase())
+      return descending ? -cmp : cmp
     })
     return words.join(' ')
   }
 
-
-
   /**
-   * Extracts words from the given text using Unicode-aware regex.
-   * @param {string} text The text to extract words from.
-   * @returns {string[]} Array of extracted words.
-   */
-  static extractWords(text) {
-    return (text.match(/\p{L}+(?:-\p{L}+)?/gu) || [])
-  }
-
-  /**
-   * Shuffles the order of words in the text randomly.
-   * @returns {string} Text with words shuffled.
+   * Shuffle words using Fisher-Yates algorithm.
+   * @returns {string}
    */
   shuffleWords() {
     if (isEmptyOrWhitespace(this.text)) return ''
     const words = TextTransformer.extractWords(this.text)
     for (let i = words.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [words[i], words[j]] = [words[j], words[i]]
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[words[i], words[j]] = [words[j], words[i]]
     }
     return words.join(' ')
   }
 
-  // Private methods
-
   /**
-   * Gets words from text with caching and intelligent splitting.
-   * @private
-   * @returns {string[]} Array of words.
+   * Extract words (Unicode, allows hyphens).
+   * @param {string} text - input text
+   * @returns {string[]}
    */
-  #getWords() {
-    if (this._wordsCache === null) {
-      this._wordsCache = this.text.trim().split(WORD_BOUNDARIES).filter(Boolean)
-    }
-    return this._wordsCache
+  static extractWords(text) {
+    // \p{L} = letter (any language), (?:-\p{L}+)? for simple hyphenation. Ignores punctuation/digits.
+    return (text.match(/\p{L}+(?:-\p{L}+)?/gu) || [])
   }
 
   /**
-   * Escapes special regex characters in a string.
-   * @private
-   * @param {string} str String to escape.
-   * @returns {string} Escaped string safe for regex.
+   * Escape special regex characters in a string.
+   * @param {string} str string to escape
+   * @returns {string}
    */
-  #escapeRegexChars(str) {
+  static escapeRegexChars(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   }
 }

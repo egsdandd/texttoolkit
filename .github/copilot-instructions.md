@@ -42,7 +42,7 @@ These instructions guide Copilot to generate code that aligns with the architect
   Run `npm test` to execute Jest tests in the `test/` directory.  
   Tests cover all modules and edge cases.
 - **Debugging:**  
-  Use scripts in `examples/` (e.g., `exampel1.js`, `exampel2.js`) for quick feature trials and debugging.
+  Use scripts in `examples/` (e.g., `exampel1-3.js`) for quick feature trials and debugging.
 - **Extensibility:**  
   Add new analyzers, formatters, searchers, or transformers by following the `src/` structure and updating `TextDocument.js` and `index.js`.
 

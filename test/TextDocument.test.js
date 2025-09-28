@@ -71,19 +71,26 @@ describe('TextDocument', () => {
 
     test('sortWords sorterar ord alfabetiskt', () => {
         const sorted = doc.sortWords()
-        const normalize = arr => arr.map(w => w.replace(/[^\p{L}\p{N}]/gu, ''))
+        // Använd samma ordextraktion som i implementationen!
+        const normalize = words => words.map(w => w.normalize('NFC'))
         const sortedWords = normalize(sorted.split(/\s+/)).sort()
-        const expectedWords = normalize(doc.getText().split(/\s+/)).sort()
+        const expectedWords = normalize(
+            doc.getText().match(/\p{L}+(?:-\p{L}+)?/gu) || []
+        ).sort()
         expect(sortedWords).toEqual(expectedWords)
     })
 
-    test('shuffleWords returnerar en sträng med samma ord i annan ordning', () => {
-        const shuffled = doc.shuffleWords()
-        expect(typeof shuffled).toBe('string')
-        const originalWords = doc.getText().split(/\s+/)
-        const shuffledWords = shuffled.split(/\s+/)
-        expect(shuffledWords.sort()).toEqual(originalWords.sort())
-    })
+
+test('shuffleWords returnerar en sträng med samma ord i annan ordning', () => {
+    const shuffled = doc.shuffleWords()
+    expect(typeof shuffled).toBe('string')
+    // Använd identisk ordextraktion för båda
+    const originalWords = doc.getText().match(/\p{L}+(?:-\p{L}+)?/gu) || []
+    const shuffledWords = shuffled.split(/\s+/)
+    expect(shuffledWords.sort()).toEqual(originalWords.sort())
+})
+
+
     test('reverseLines vänder radordning', () => {
         const multiLineDoc = new TextDocument('rad1\nrad2\nrad3')
         expect(multiLineDoc.reverseLines()).toBe('rad3\nrad2\nrad1')

@@ -24,7 +24,9 @@ README Documents in the repo:
 
 [TextSearcer.md](./doc/README.TextSearcher.md)
 
-[TextTransformer.md](./doc/README.TextFormatters.md)
+[TextTransformer.md](./doc/README.Transformer.md)
+
+[TextReverser.md](./doc/README.TextReverser.md)
 
 Utils:
 
