@@ -1,0 +1,4 @@
+
+> texttoolkit@1.0.0 test
+> node --experimental-vm-modules ./node_modules/jest/bin/jest.js --verbose
+
