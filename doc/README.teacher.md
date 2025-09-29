@@ -24,7 +24,11 @@ Jag skrev allt på svenska först och sedan lät jag min AI översätta och fixa
 1. Jag hade problem med att strängar kan innehålle mellanslag och andra special tecken och det tog ett tag att reda ut det.
 2. Jag hade problem med att få regex att fungera som jag ville. Till slut föll allt(?) på plats och jag fick till det men jag gick över till unicode-hantering.
 3. Det finns fortfarande många otestade tkn kombinationer och fler metoder att skriva men detta får räcka
+4. Det tog ett bra tag innan jag kom igång med att göra privata funktioner (helpers) och på så sätt göra koden lättare att läsa
+5. Uppdelning i foldern utils för att  lägga inputValidators och errors kom till ganska sent men lyckades lösa problematiken med att bara ändra på ett ställe
+
 ## Projektstruktur
+
 Jag har organiserat koden i moduler enligt separation of concerns:
 - `analyzers/` - Textanalys (ordräkning, palindromer, etc.)
 - `formatters/` - Formatering (camelCase, snake_case, etc.)
