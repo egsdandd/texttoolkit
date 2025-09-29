@@ -1,4 +1,5 @@
 [Tillbaka till README](../README.md)
+
 Hej
 
 Jag har säkert inte gjort denna uppgiften enligt alla de instruktioner vi fått men jag har försökt så gott jag kunnat.
@@ -7,7 +8,7 @@ Jag är ju 71-år och pluggar för att jag tycker det är roligt att lära mig n
 
 Jag hade ju lite problem att komma på vad jag skulle koda så jag bad min AI om lite förslag och det resulterade i ett "texttollkit" som manipulerar strängar och texter som ju inte är så upphetsande i sig men det var en bra övning för mig.
 
-Jag har använt min AI all kolla vad jag gjort och att hjälpa mig skapa testfiler så koden har nog blivit ganska ok (den är i och för sig inte så avancerad som den kanske borde vara). Detta får man väl ändå säga är det sätt man skriver kod på idag. Nu är ju koden i sig inte så komplicerad utan det har mest varit en fråga till AI om vilka metoder som finns inbyggt i javascript, dvs vad de heter och hur man använder dem.
+Jag har använt min AI att kolla vad jag gjort och att hjälpa mig skapa testfiler så koden har nog blivit ganska ok (den är i och för sig inte så avancerad som den kanske borde vara). Detta får man väl ändå säga är det sätt man skriver kod på idag. Nu är ju koden i sig inte så komplicerad utan det har mest varit en fråga till AI om vilka metoder som finns inbyggt i javascript, dvs vad de heter och hur man använder dem.
 
 Jag har jobbat mycket med clean-code reglerna så där känns det som jag har kommit en bra bit på vägen. 
 
