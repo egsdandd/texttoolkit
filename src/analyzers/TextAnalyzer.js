@@ -8,7 +8,6 @@ import {
   isEmptyOrWhitespace,
 } from '../utils/inputValidation.js'
 
-// Regex konstanter för bättre underhåll
 // Regex constants for maintainability
 const LETTER_REGEX = /[\p{L}]/u // Matches all Unicode letters
 const SENTENCE_REGEX = /[^.!?]+[.!?]+/g // Matches entire sentences
@@ -57,8 +56,6 @@ export default class TextAnalyzer {
    * Counts the number of characters in the text.
    * @param {boolean} includeSpaces Whether to include spaces in the character count.
    * @returns {number} The total character count.
-   * @example
-   * analyzer.countCharacters(true)  // includes spaces
    * analyzer.countCharacters(false) // excludes spaces
    */
   countCharacters(includeSpaces = true) {
@@ -72,8 +69,6 @@ export default class TextAnalyzer {
   /**
    * Calculates the frequency of each letter (a-z, å, ä, ö) in the text, case-insensitive.
    * @returns {{[key: string]: number}} An object where keys are letters and values are their frequency count.
-   * @example
-   * analyzer.letterFrequency() // { h: 1, e: 1, l: 2, o: 1 }
    */
   letterFrequency() {
     if (isEmptyOrWhitespace(this.text)) return {}
@@ -93,8 +88,6 @@ export default class TextAnalyzer {
   /**
    * Finds all unique palindromic words (length > 1) in the text, case-insensitive.
    * @returns {string[]} An array of unique palindromic words found in the text.
-   * @example
-   * analyzer.findPalindromes() // ['madam', 'dad', 'anna']
    */
   findPalindromes() {
     if (isEmptyOrWhitespace(this.text)) return []
@@ -125,8 +118,6 @@ export default class TextAnalyzer {
     if (typeof word !== 'string' || word.length <= 1) return false
     return word === [...word].reverse().join('')
   }
-
-  // ...existing code...
 
   /**
    * Extracts words from the text with caching, converting to lowercase and removing punctuation.

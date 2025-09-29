@@ -45,8 +45,6 @@ export default class TextSearcher {
    * @param {string} substring The substring to search for.
    * @param {boolean} caseSensitive Whether the search should be case-sensitive.
    * @returns {number} Index of first occurrence, or -1 if not found.
-   * @example
-   * searcher.findFirst("world", false) // 6 (first occurrence, case-insensitive)
    */
   findFirst(substring, caseSensitive = true) {
     this.#validateSubstring(substring)
@@ -63,8 +61,6 @@ export default class TextSearcher {
    * @param {string} substring The substring to search for.
    * @param {boolean} caseSensitive Whether the search should be case-sensitive.
    * @returns {number[]} Array of indices where the substring was found.
-   * @example
-   * searcher.findAll("world", false) // [6, 29] (all occurrences, case-insensitive)
    */
   findAll(substring, caseSensitive = true) {
     this.#validateSubstring(substring)
@@ -101,8 +97,6 @@ export default class TextSearcher {
    * @param {string} substring The substring to count.
    * @param {boolean} caseSensitive Whether the search should be case-sensitive.
    * @returns {number} Number of occurrences found.
-   * @example
-   * searcher.count("world", false) // 2
    */
   count(substring, caseSensitive = true) {
     return this.findAll(substring, caseSensitive).length
@@ -112,8 +106,6 @@ export default class TextSearcher {
    * Finds all regex pattern matches in the text.
    * @param {RegExp} pattern Regex pattern to match against the text.
    * @returns {RegExpMatchArray|string[]} Array of matches, or empty array if no matches.
-   * @example
-   * searcher.matchPattern(/\b\w{5}\b/g) // Find all 5-letter words
    */
   matchPattern(pattern) {
     this.#validateRegexPattern(pattern, 'pattern')
@@ -134,8 +126,6 @@ export default class TextSearcher {
    * Tests if a regex pattern matches anywhere in the text.
    * @param {RegExp} pattern Regex pattern to test.
    * @returns {boolean} True if pattern matches, false otherwise.
-   * @example
-   * searcher.testPattern(/^\w+/) // Test if text starts with word characters
    */
   testPattern(pattern) {
     this.#validateRegexPattern(pattern, 'pattern')
@@ -146,8 +136,6 @@ export default class TextSearcher {
    * Finds all matches with their positions and captured groups.
    * @param {RegExp} pattern Regex pattern with global flag.
    * @returns {Array<{match: string, index: number, groups: string[]}>} Detailed match information.
-   * @example
-   * searcher.findMatches(/(\w+)/g) // Find all words with position info
    */
   findMatches(pattern) {
     this.#validateRegexPattern(pattern, 'pattern')

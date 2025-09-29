@@ -55,8 +55,6 @@ export default class TextFormatter {
    * Capitalizes the first letter of each word while preserving the original spacing and punctuation.
    * Handles Unicode characters including combining marks properly.
    * @returns {string} Text with each word capitalized.
-   * @example
-   * formatter.capitalizeWords() // "Hello World-Foo_Bar"
    */
   capitalizeWords() {
     return this.text.replace(/\p{L}(\p{L}|\p{M})*/gu, (match) =>
@@ -68,8 +66,6 @@ export default class TextFormatter {
    * Capitalizes words after converting to a clean word array format.
    * This removes punctuation and normalizes spacing.
    * @returns {string} Capitalized words separated by single spaces.
-   * @example
-   * formatter.capitalizeWordArray() // "Hello World Foo Bar"
    */
   capitalizeWordArray() {
     return this.getWords().map(word => this.#capitalize(word)).join(' ')
@@ -78,8 +74,6 @@ export default class TextFormatter {
   /**
    * Converts text to camelCase format.
    * @returns {string} Text in camelCase format.
-   * @example
-   * formatter.toCamelCase() // "helloWorldFooBar"
    */
   toCamelCase() {
     const words = this.getWords()
@@ -92,8 +86,6 @@ export default class TextFormatter {
   /**
    * Converts text to snake_case format.
    * @returns {string} Text in snake_case format.
-   * @example
-   * formatter.toSnakeCase() // "hello_world_foo_bar"
    */
   toSnakeCase() {
     return this.getWords().join('_')
@@ -102,8 +94,6 @@ export default class TextFormatter {
   /**
    * Converts text to PascalCase format.
    * @returns {string} Text in PascalCase format.
-   * @example
-   * formatter.toPascalCase() // "HelloWorldFooBar"
    */
   toPascalCase() {
     return this.getWords().map(word => this.#capitalize(word)).join('')
@@ -112,8 +102,6 @@ export default class TextFormatter {
   /**
    * Converts text to kebab-case format.
    * @returns {string} Text in kebab-case format.
-   * @example
-   * formatter.toKebabCase() // "hello-world-foo-bar"
    */
   toKebabCase() {
     return this.getWords().join('-')

@@ -3,29 +3,27 @@ Hej
 
 Jag har säkert inte gjort denna uppgiften enligt alla de instruktioner vi fått men jag har försökt så gott jag kunnat.
 
-Jag är ju 71-år och pluggar för att jag tycker det är roligt att lära mig nya saker vilket innebär att jag för min del jobbat MYCKET med allt runtomkring och kanske inte så mycket med koden i sig.
+Jag är ju 71-år och pluggar för att jag tycker det är roligt att lära mig nya saker vilket innebär att jag för min del jobbat MYCKET med allt runtomkring och kanske inte så mycket med koden i sig. Jag tycker jag kan kosta på mig att göra det roliga, betyg har underordnad betydelse. 
 
-Jag hade ju lite problem att komma på vad jag skulle koda så jag bad min AI om lite förslag och det resulterade i ett "texttollkit" som manipulerar strängar och texter
+Jag hade ju lite problem att komma på vad jag skulle koda så jag bad min AI om lite förslag och det resulterade i ett "texttollkit" som manipulerar strängar och texter som ju inte är så upphetsande i sig men det var en bra övning för mig.
 
-Jag har använt min AI till ganska stor utsträckning så koden har nog blivit ganska ok (den är i och för sig inte så avancerad som den kanske borde vara). Detta får man väl ändå säga är det sätt man skriver kod på idag. Nu är ju koden i sig inte så komplicerad utan det har mest varit en fråga om vilka metoder som finns inbyggt i javascript, dvs vad de heter och hur man använder dem.
+Jag har använt min AI all kolla vad jag gjort och att hjälpa mig skapa testfiler så koden har nog blivit ganska ok (den är i och för sig inte så avancerad som den kanske borde vara). Detta får man väl ändå säga är det sätt man skriver kod på idag. Nu är ju koden i sig inte så komplicerad utan det har mest varit en fråga till AI om vilka metoder som finns inbyggt i javascript, dvs vad de heter och hur man använder dem.
 
 Jag har jobbat mycket med clean-code reglerna så där känns det som jag har kommit en bra bit på vägen. 
 
-Vad gäller reflektioner har jag fokuserat på filen Textformatter.js som jag skrev ihop själv för att efter det var gjort kontrollera vilka misstag jag gör. Nu fick jag ju tänka efter lite hur man skulle skrivit innan föreläsningar och bokläsning av kap 1-3 men jag tror den visar ganska ok var jag stod innan kursen då jag ca 1978 startade som Fortan/Assembler programmerare.
-
-
+Vad gäller reflektioner har jag fokuserat på filen Textformatter.js som jag skrev ihop själv för att efter det var gjort kontrollera vilka misstag jag gör. Jag tänka efter lite hur man skulle skrivit innan föreläsningar och bokläsning av kap 1-3 men jag tror den visar ganska ok var jag stod innan kursen då jag ca 1978 startade som Fortan/Assembler programmerare.
 
 [Kod innan 1DV610](nyborjarkod.md) och den är ju inte så mycket att vara stolt över utan innehåller ju i stort sett alla fel man kan göra. Den är ju inte ens körbar. Se kommentarer i filen.
 
-[Filen TextFormatter.js](../src/formatters/TextFormatter.js) uppfyller däremot kraven (tycker jag) och är ju så jag önskat jag skrivit den direkt. Samma gäller för de andra kodfilerna
+[Filen TextFormatter.js](../src/formatters/TextFormatter.js) uppfyller däremot kraven (tycker jag) och är ju så jag önskat jag kunnat skriva den direkt. Samma gäller för de andra kodfilerna
 
 Strul på vägen:
 
 Jag skrev allt på svenska först och sedan lät jag min AI översätta och fixa till, hoppas jag fick med allt.
 
 1. Jag hade problem med att strängar kan innehålle mellanslag och andra special tecken och det tog ett tag att reda ut det.
-2. Jag hade problem med att få regex att fungera som jag ville. Till slut föll allt på plats och jag fick till det men jag gick över till unicode-hantering.
-
+2. Jag hade problem med att få regex att fungera som jag ville. Till slut föll allt(?) på plats och jag fick till det men jag gick över till unicode-hantering.
+3. Det finns fortfarande många otestade tkn kombinationer och fler metoder att skriva men detta får räcka
 ## Projektstruktur
 Jag har organiserat koden i moduler enligt separation of concerns:
 - `analyzers/` - Textanalys (ordräkning, palindromer, etc.)
