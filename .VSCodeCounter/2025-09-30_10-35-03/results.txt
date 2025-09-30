@@ -1,0 +1,39 @@
+Date : 2025-09-30 10:35:03
+Directory : e:\1DV610\texttoolkit\src
+Total : 9 files,  585 codes, 416 comments, 159 blanks, all 1160 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |          9 |        585 |        416 |        159 |      1,160 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                      | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                         |          9 |        585 |        416 |        159 |      1,160 |
+| . (Files)                                                 |          2 |         83 |        104 |         48 |        235 |
+| analyzers                                                 |          1 |         71 |         24 |         16 |        111 |
+| formatters                                                |          1 |         75 |         26 |         19 |        120 |
+| searchers                                                 |          1 |        102 |         65 |         29 |        196 |
+| transformers                                              |          2 |        178 |        118 |         36 |        332 |
+| utils                                                     |          2 |         76 |         79 |         11 |        166 |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                  | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| e:\1DV610\texttoolkit\src\TextDocument.js                 | JavaScript |         69 |         97 |         44 |        210 |
+| e:\1DV610\texttoolkit\src\analyzers\TextAnalyzer.js       | JavaScript |         71 |         24 |         16 |        111 |
+| e:\1DV610\texttoolkit\src\formatters\TextFormatter.js     | JavaScript |         75 |         26 |         19 |        120 |
+| e:\1DV610\texttoolkit\src\index.js                        | JavaScript |         14 |          7 |          4 |         25 |
+| e:\1DV610\texttoolkit\src\searchers\TextSearcher.js       | JavaScript |        102 |         65 |         29 |        196 |
+| e:\1DV610\texttoolkit\src\transformers\TextReverser.js    | JavaScript |         93 |         68 |         23 |        184 |
+| e:\1DV610\texttoolkit\src\transformers\TextTransformer.js | JavaScript |         85 |         50 |         13 |        148 |
+| e:\1DV610\texttoolkit\src\utils\errors.js                 | JavaScript |         42 |         45 |          3 |         90 |
+| e:\1DV610\texttoolkit\src\utils\inputValidation.js        | JavaScript |         34 |         34 |          8 |         76 |
+| Total                                                     |            |        585 |        416 |        159 |      1,160 |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
