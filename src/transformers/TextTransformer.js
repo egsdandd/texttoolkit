@@ -10,12 +10,11 @@ import {
 import { InvalidTypeError } from '../utils/errors.js'
 
 /**
- * Utility for word-level text transformation (Unicode support).
+ * Word-level text transformation utilities.
  */
 export default class TextTransformer {
   /**
-   * Create a new instance.
-   * @param {string} text The text to transform.
+   * @param {string} text Text to transform.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
@@ -24,8 +23,7 @@ export default class TextTransformer {
   }
 
   /**
-   * Apply a function to every word.
-   * @param {Function} transformFn - function(word) => transformedWord
+   * @param {Function} transformFn Function to apply to each word.
    * @returns {string}
    */
   transformWords(transformFn) {
@@ -35,8 +33,7 @@ export default class TextTransformer {
   }
 
   /**
-   * Reverse the order of the words.
-   * @returns {string}
+   * @returns {string} Words in reverse order.
    */
   reverseWordOrder() {
     if (isEmptyOrWhitespace(this.text)) return ''
@@ -44,10 +41,9 @@ export default class TextTransformer {
   }
 
   /**
-   * Replace all occurrences of a word using Unicode-aware word boundaries.
-   * @param {string} oldWord - word to replace
-   * @param {string} newWord - replacement word
-   * @param {boolean} [caseSensitive=true] - whether the match is case-sensitive
+   * @param {string} oldWord Word to replace.
+   * @param {string} newWord Replacement word.
+   * @param {boolean} [caseSensitive] Case sensitivity.
    * @returns {string}
    */
   replaceWord(oldWord, newWord, caseSensitive = true) {
@@ -56,15 +52,13 @@ export default class TextTransformer {
     if (isEmptyOrWhitespace(this.text)) return ''
     const flags = caseSensitive ? 'gu' : 'gui'
     const escapedOldWord = TextTransformer.escapeRegexChars(oldWord)
-    // Unicode-aware word boundaries using lookarounds for letters
     const regex = new RegExp(`(?<=^|\\P{L})${escapedOldWord}(?=\\P{L}|$)`, flags)
     return this.text.replace(regex, newWord)
   }
 
   /**
-   * Remove specified words from the text.
-   * @param {string[]} wordsToRemove - array of words to remove
-   * @param {boolean} [caseSensitive=true] - whether the removal is case-sensitive
+   * @param {string[]} wordsToRemove Words to remove.
+   * @param {boolean} [caseSensitive] Case sensitivity.
    * @returns {string}
    */
   removeWords(wordsToRemove, caseSensitive = true) {
@@ -86,8 +80,7 @@ export default class TextTransformer {
   }
 
   /**
-   * Filter words by a predicate.
-   * @param {Function} predicate - function(word) => boolean
+   * @param {Function} predicate Function to filter words.
    * @returns {string}
    */
   filterWords(predicate) {
@@ -97,8 +90,7 @@ export default class TextTransformer {
   }
 
   /**
-   * Transform words based on position.
-   * @param {Function} transformFn - function(word, index)
+   * @param {Function} transformFn Function to transform words by position.
    * @returns {string}
    */
   transformWordsByPosition(transformFn) {
@@ -110,8 +102,7 @@ export default class TextTransformer {
   }
 
   /**
-   * Sort words alphabetically.
-   * @param {boolean} [descending=false] - Sort in descending order if true.
+   * @param {boolean} [descending] Sort descending.
    * @returns {string}
    */
   sortWords(descending = false) {
@@ -125,22 +116,20 @@ export default class TextTransformer {
   }
 
   /**
-   * Shuffle words using Fisher-Yates algorithm.
-   * @returns {string}
+   * @returns {string} Shuffled words.
    */
   shuffleWords() {
     if (isEmptyOrWhitespace(this.text)) return ''
     const words = TextTransformer.extractWords(this.text)
     for (let i = words.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
-      ;[words[i], words[j]] = [words[j], words[i]]
+        ;[words[i], words[j]] = [words[j], words[i]]
     }
     return words.join(' ')
   }
 
   /**
-   * Extract words (Unicode, allows hyphens).
-   * @param {string} text - input text
+   * @param {string} text Input text.
    * @returns {string[]}
    */
   static extractWords(text) {
@@ -149,8 +138,7 @@ export default class TextTransformer {
   }
 
   /**
-   * Escape special regex characters in a string.
-   * @param {string} str string to escape
+   * @param {string} str String to escape.
    * @returns {string}
    */
   static escapeRegexChars(str) {

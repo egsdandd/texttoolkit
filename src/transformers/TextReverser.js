@@ -13,19 +13,18 @@ const SENTENCE_DELIMITERS = /([.!?])/
 const WORD_BOUNDARIES = /\s+/
 
 /**
- * Utilities for reversing text in various ways with Unicode support.
+ * Text reversal utilities.
  * @class TextReverser
  */
 export default class TextReverser {
   /**
-   * Creates a new TextReverser instance.
-   * @param {string} text The text to reverse.
+   * @param {string} text Text to reverse.
    */
   constructor(text) {
     validateNonEmptyString(text, 'Text')
     validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
     this.text = text.normalize('NFC')
-    
+
     // Cache for expensive operations
     this._reversedCache = null
     this._wordsCache = null
@@ -33,8 +32,7 @@ export default class TextReverser {
   }
 
   /**
-   * Reverses the entire text character by character.
-   * @returns {string} The text with all characters reversed.
+   * @returns {string} Reversed text.
    */
   reverse() {
     if (this._reversedCache === null) {
@@ -44,8 +42,7 @@ export default class TextReverser {
   }
 
   /**
-   * Reverses each word individually while preserving word positions.
-   * @returns {string} Text with each word reversed but in original order.
+   * @returns {string} Each word reversed.
    */
   reverseWordsIndividually() {
     return this.#getWords()
@@ -54,39 +51,35 @@ export default class TextReverser {
   }
 
   /**
-   * Reverses the order of words while keeping each word intact.
-   * @returns {string} Text with word order reversed.
+   * @returns {string} Word order reversed.
    */
   reverseWordOrder() {
     return this.#getWords().reverse().join(' ')
   }
 
   /**
-   * Reverses the order of lines in multi-line text.
-   * @returns {string} Text with line order reversed.
+   * @returns {string} Line order reversed.
    */
   reverseLines() {
     return this.#getLines().reverse().join('\n')
   }
 
   /**
-   * Reverses only words that meet a minimum length requirement.
-   * @param {number} minLength Minimum number of characters required to reverse a word.
-   * @returns {string} Text with long words reversed.
+   * @param {number} minLength Minimum word length.
+   * @returns {string} Long words reversed.
    */
   reverseLongWords(minLength = 4) {
     if (!Number.isInteger(minLength) || minLength < 1) {
       throw new InvalidTypeError('minLength', 'a positive integer greater than 0')
     }
-    
+
     return this.#getWords()
       .map(word => word.length >= minLength ? this.#reverseString(word) : word)
       .join(' ')
   }
 
   /**
-   * Reverses each sentence individually while preserving punctuation.
-   * @returns {string} Text with each sentence reversed but punctuation preserved.
+   * @returns {string} Each sentence reversed.
    */
   reverseEachSentence() {
     return this.text.split(SENTENCE_DELIMITERS)
@@ -95,27 +88,25 @@ export default class TextReverser {
   }
 
   /**
-   * Checks if the text is a palindrome.
-   * @param {boolean} ignoreCase Whether to ignore case differences.
-   * @param {boolean} ignoreSpaces Whether to ignore spaces and punctuation.
-   * @returns {boolean} True if the text is a palindrome.
+   * @param {boolean} ignoreCase Ignore case.
+   * @param {boolean} ignoreSpaces Ignore spaces/punctuation.
+   * @returns {boolean}
    */
   isPalindrome(ignoreCase = true, ignoreSpaces = false) {
     validateBoolean(ignoreCase, 'ignoreCase')
     validateBoolean(ignoreSpaces, 'ignoreSpaces')
-    
+
     let processedText = ignoreCase ? this.text.toLowerCase() : this.text
-    
+
     if (ignoreSpaces) {
       processedText = processedText.replace(/[^\p{L}\p{N}]/gu, '')
     }
-    
+
     return processedText === this.#reverseString(processedText)
   }
 
   /**
-   * Reverses each word and capitalizes the first letter.
-   * @returns {string} Text with words reversed and capitalized.
+   * @returns {string} Words reversed and capitalized.
    */
   reverseAndCapitalizeWords() {
     return this.#getWords()
@@ -127,8 +118,7 @@ export default class TextReverser {
   }
 
   /**
-   * Reverses alternating words (1st, 3rd, 5th, etc.).
-   * @returns {string} Text with every other word reversed.
+   * @returns {string} Alternating words reversed.
    */
   reverseAlternatingWords() {
     return this.#getWords()
@@ -137,9 +127,8 @@ export default class TextReverser {
   }
 
   /**
-   * Creates a mirror effect by appending the reversed text.
-   * @param {string} separator String to insert between original and reversed text.
-   * @returns {string} Original text plus separator plus reversed text.
+   * @param {string} separator Separator string.
+   * @returns {string} Mirrored text.
    */
   mirror(separator = ' ') {
     return this.text + separator + this.reverse()

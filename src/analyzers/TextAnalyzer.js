@@ -9,39 +9,23 @@ import {
 } from '../utils/inputValidation.js'
 
 // Regex constants for maintainability
-const LETTER_REGEX = /[\p{L}]/u // Matches all Unicode letters
-const SENTENCE_REGEX = /[^.!?]+[.!?]+/g // Matches entire sentences
+const LETTER_REGEX = /[\p{L}]/u // Unicode letters
+const SENTENCE_REGEX = /[^.!?]+[.!?]+/g // Entire sentences
 
-/**
- * A class for analyzing text content, providing methods to count words, sentences,
- * characters, letter frequency, and find palindromes.
- * @class TextAnalyzer 
- * 
- */
+/** @class TextAnalyzer */
 export default class TextAnalyzer {
-  /**
-   * Creates an instance of TextAnalyzer.
-   * @param {string} text The text to be analyzed.
-   */
+  /** @param {string} text The text to be analyzed. */
   constructor(text) {
     this.setText(text)
   }
 
-  /**
-   * Counts the number of words in the text.
-   * Words are defined as sequences of Unicode letters separated by whitespace or punctuation.
-   * @returns {number} The number of words found in the text.
-   */
+  /** @returns {number} Number of words found in the text. */
   countWords() {
     if (isEmptyOrWhitespace(this.text)) return 0
     return this.#getWords().length
   }
 
-  /**
-   * Counts the number of sentences in the text.
-   * Sentences are identified by ending punctuation (.!?).
-   * @returns {number} The number of sentences found in the text.
-   */
+  /** @returns {number} Number of sentences found in the text. */
   countSentences() {
     if (isEmptyOrWhitespace(this.text)) return 0
     const sentences = this.text.match(SENTENCE_REGEX)
@@ -49,10 +33,8 @@ export default class TextAnalyzer {
   }
 
   /**
-   * Counts the number of characters in the text.
-   * @param {boolean} includeSpaces Whether to include spaces in the character count.
-   * @returns {number} The total character count.
-   * analyzer.countCharacters(false) // excludes spaces
+   * @param {boolean} includeSpaces Whether to include spaces.
+   * @returns {number} Total character count.
    */
   countCharacters(includeSpaces = true) {
     if (isEmptyOrWhitespace(this.text)) return 0
@@ -62,10 +44,7 @@ export default class TextAnalyzer {
       : this.text.replace(/\s/g, '').length
   }
 
-  /**
-   * Calculates the frequency of each letter (a-z, å, ä, ö) in the text, case-insensitive.
-   * @returns {{[key: string]: number}} An object where keys are letters and values are their frequency count.
-   */
+  /** @returns {{[key: string]: number}} Object with letter frequencies. */
   letterFrequency() {
     if (isEmptyOrWhitespace(this.text)) return {}
 
@@ -81,19 +60,13 @@ export default class TextAnalyzer {
     return frequency
   }
 
-  /**
-   * Finds all unique palindromic words (length > 1) in the text, case-insensitive.
-   * @returns {string[]} An array of unique palindromic words found in the text.
-   */
+  /** @returns {string[]} Array of unique palindromic words. */
   findPalindromes() {
     if (isEmptyOrWhitespace(this.text)) return []
     return [...new Set(this.#getWords().filter(this.#isPalindrome))]
   }
 
-  /**
-   * Sets the text to be analyzed and resets caches.
-   * @param {string} text The text to be analyzed.
-   */
+  /** @param {string} text The text to be analyzed. */
   setText(text) {
     validateNonEmptyString(text, 'Text')
     validateMaxLength(text, MAX_TEXT_LENGTH, 'Text')
@@ -105,10 +78,8 @@ export default class TextAnalyzer {
   // Private methods
 
   /**
-   * Checks if a given word is a palindrome (case-insensitive, length > 1).
-   * @private
-   * @param {string} word The word to check for palindrome property.
-   * @returns {boolean} True if the word is a palindrome, false otherwise.
+   * @param {string} word Word to check.
+   * @returns {boolean} if palindrome.
    */
   #isPalindrome(word) {
     if (typeof word !== 'string' || word.length <= 1) return false
@@ -116,15 +87,12 @@ export default class TextAnalyzer {
   }
 
   /**
-   * Extracts words from the text with caching, converting to lowercase and removing punctuation.
-   * Supports Unicode characters.
-   * @private
-   * @returns {string[]} An array of words extracted from the text.
+   * @returns {string[]} words extracted from the text.
    */
   #getWords() {
     if (this._wordsCache === null) {
       this._wordsCache = this.#getNormalizedText()
-        .replace(/[^\p{L}\s]/gu, '') // Remove everything except letters and whitespace
+        .replace(/[^\p{L}\s]/gu, '') // letters and whitespace
         .split(/\s+/)
         .filter(Boolean)
     }
@@ -132,8 +100,6 @@ export default class TextAnalyzer {
   }
 
   /**
-   * Gets normalized (lowercase) text with caching.
-   * @private
    * @returns {string} The normalized text.
    */
   #getNormalizedText() {

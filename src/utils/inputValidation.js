@@ -1,7 +1,6 @@
 /**
- * Checks if a string is empty or contains only whitespace.
- * @param {string} str The string to check.
- * @returns {boolean} True if the string is empty or whitespace, false otherwise.
+ * @param {string} str String to check.
+ * @returns {boolean}
  */
 export function isEmptyOrWhitespace(str) {
   return typeof str !== 'string' || str.trim().length === 0
@@ -15,37 +14,32 @@ import {
 } from './errors.js'
 
 /**
- * Check if the value is a function.
- *
- * @param {any} fn - The value to check.
- * @returns {boolean} Returns true if the value is a function, otherwise false.
+ * @param {any} fn Value to check.
+ * @returns {boolean}
  */
 export function isFunction(fn) {
   return typeof fn === 'function'
 }
 
 /**
- * Check if the value is a positive integer.
- * @param {number} value - The value to check.
- * @param {string} [param] - The parameter name for error messages.
+ * @param {number} value Value to check.
+ * @param {string} [param] Parameter name.
  */
 export function validatePositiveInteger(value, param = 'Argument') {
   if (!Number.isInteger(value) || value < 1)
     throw new InvalidTypeError(param, 'an integer greater than 0')
 }
 /**
- * Check if the value is a non-empty string.
- * @param {any} v - The value to check.
- * @returns {boolean} Returns true if the value is a non-empty string, otherwise false.
+ * @param {any} v Value to check.
+ * @returns {boolean}
  */
 export function isNonEmptyString(v) {
   return typeof v === 'string' && v.trim().length > 0
 }
 
 /**
- * Check if the value is a non-empty string.
- * @param {any} val - The value to check.
- * @param {string} [msgOrParam] - The parameter name or an error message.
+ * @param {any} val Value to check.
+ * @param {string} [msgOrParam] Parameter name or error message.
  */
 export function validateNonEmptyString(val, msgOrParam = 'Value') {
   if (typeof val !== 'string') throw new InvalidTypeError(msgOrParam, 'a string')
@@ -53,10 +47,9 @@ export function validateNonEmptyString(val, msgOrParam = 'Value') {
 }
 
 /**
- * Check if the string does not exceed the maximum length.
- * @param {string} val - The string to check.
- * @param {number} max - The maximum allowed length.
- * @param {string} [msgOrParam] - The parameter name or an error message.
+ * @param {string} val String to check.
+ * @param {number} max Max length.
+ * @param {string} [msgOrParam] Parameter name or error message.
  */
 export function validateMaxLength(val, max, msgOrParam = 'Value') {
   if (typeof val !== 'string') throw new InvalidTypeError(msgOrParam, 'a string')
@@ -64,18 +57,16 @@ export function validateMaxLength(val, max, msgOrParam = 'Value') {
 }
 
 /**
- * Validates that the value is a boolean.
- * @param {any} val - The value to validate as boolean.
- * @param {string} param - The parameter name for error messages.
+ * @param {any} val Value to validate.
+ * @param {string} param Parameter name.
  */
 export function validateBoolean(val, param = 'Argument') {
   if (typeof val !== 'boolean') throw new InvalidBooleanError(param)
 }
 
 /**
- * Validates that the value is a function.
- * @param {any} fn - The value to validate as a function.
- * @param {string} param - The parameter name for error messages.
+ * @param {any} fn Value to validate.
+ * @param {string} param Parameter name.
  */
 export function validateFunction(fn, param = 'Argument') {
   if (typeof fn !== 'function') throw new InvalidTypeError(param, 'a function')

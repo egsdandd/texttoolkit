@@ -28,6 +28,10 @@ Jag skrev allt på svenska först och sedan lät jag min AI översätta och fixa
 4. Det tog ett bra tag innan jag kom igång med att göra privata funktioner (helpers) och på så sätt göra koden lättare att läsa
 5. Uppdelning i foldern utils för att  lägga inputValidators och errors kom till ganska sent men lyckades lösa problematiken med att bara ändra på ett ställe
 
+ESLint:
+Jag har använt mig av npm run lint för att kontroller riktigheten. Tyvärr kräver den att en del kommentarer som känns överflödiga skall vara kvar men jag valde att inte ändra default reglerna för enkelhets skull
+
+
 ## Projektstruktur
 
 Jag har organiserat koden i moduler enligt separation of concerns:
