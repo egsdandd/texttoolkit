@@ -50,7 +50,7 @@ Här är en tabell med fem publika identifierare från modulens publika interfac
 Jag tycker att många av reglerna i kapitel 2 är självklara när man väl ser dem, men det är lätt att slarva med namngivning när man har bråttom. Jag märker att jag ibland använder för generella namn eller förkortningar, särskilt i interna funktioner, men försöker vara extra tydlig i det publika interfacet. En utmaning är att hitta namn som är både korta och beskrivande, särskilt när metoder har många parametrar. Jag håller med om att intentionen ska vara tydlig och att man ska undvika förkortningar och “söta” namn. Jag ser också att det ibland kan vara svårt att hitta domänspecifika namn som är begripliga för alla, så jag försöker balansera mellan domän- och lösningsnamn.
 
 
-och för kapitel 3
+## och för kapitel 3
 
 Här är en tabell över de fem längsta metoderna/funktionerna i projektet, med analys enligt kapitel 3 i Clean Code.
 
