@@ -26,10 +26,55 @@ Jag skrev allt på svenska först och sedan lät jag min AI översätta och fixa
 2. Jag hade problem med att få regex att fungera som jag ville. Till slut föll allt(?) på plats och jag fick till det men jag gick över till unicode-hantering.
 3. Det finns fortfarande många otestade tkn kombinationer och fler metoder att skriva men detta får räcka
 4. Det tog ett bra tag innan jag kom igång med att göra privata funktioner (helpers) och på så sätt göra koden lättare att läsa
-5. Uppdelning i foldern utils för att  lägga inputValidators och errors kom till ganska sent men lyckades lösa problematiken med att bara ändra på ett ställe
+5. Uppdelning i foldern utils för att  lägga inputValidators och errors kom till ganska sent men lyckades lösa problematiken med att bara ändra på ett ställe och göra koden lättare att läsa.
 
 ESLint:
 Jag har använt mig av npm run lint för att kontroller riktigheten. Tyvärr kräver den att en del kommentarer som känns överflödiga skall vara kvar men jag valde att inte ändra default reglerna för enkelhets skull
+
+## Försök att svara på frågorna/uppgifterna:
+
+För att svara på frågorna om kapitel 2 och 3 tog jag min vana trogen hjälp av min AI för att analysera vad jag åstakommit i detta avseende och kom upp med följande reultat för kapitel 2
+
+Här är en tabell med fem publika identifierare från modulens publika interface, med analys enligt olika regler från kapitel 2 i Clean Code.
+
+| Namn                        | Förklaring & Regler från Clean Code                                                                                                   | Reflektion och regler från Clean Code                                                                                                 |
+|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| TextDocument                | Klassnamn för huvudklassen i modulen. Use Intention-Revealing Names: Namnet visar tydligt vad klassen representerar.                  | Namnet är tydligt och följer konventionen för klasser. Jag undviker förkortningar och onödig information.                            |
+| countWords()                | Metod som räknar antalet ord i texten. Use Verbs for Methods: Metodnamn är ett verb och beskriver exakt vad den gör.                   | Jag tycker det är bra att använda verb för metoder. Namnet är självförklarande och lätt att förstå för andra utvecklare.             |
+| isEmpty()                   | Metod som returnerar om texten är tom. Use Boolean Naming: is prefixet signalerar att returvärdet är boolskt.                         | Jag följer konventionen med is/has/can för boolean-metoder. Det gör koden mer läsbar och förutsägbar.                                |
+| replaceWord(oldWord, newWord, caseSensitive) | Metod som ersätter ett ord. Choose Descriptive Names: Namnet och parametrarna är beskrivande. Avoid Encodings: Inga förkortningar. | Namnet är långt men tydligt. Jag undviker förkortningar och försöker vara så beskrivande som möjligt utan att bli överdrivet lång.   |
+| letterFrequency()           | Metod som returnerar bokstavsfrekvens. Use Nouns for Accessors: Namnet är ett substantiv och beskriver vad som returneras.             | Jag tycker det är bra att accessorer/metoder som returnerar data är substantiv. Namnet är tydligt och undviker onödig information.   |
+
+## Reflektion kring kapitel 2
+
+Jag tycker att många av reglerna i kapitel 2 är självklara när man väl ser dem, men det är lätt att slarva med namngivning när man har bråttom. Jag märker att jag ibland använder för generella namn eller förkortningar, särskilt i interna funktioner, men försöker vara extra tydlig i det publika interfacet. En utmaning är att hitta namn som är både korta och beskrivande, särskilt när metoder har många parametrar. Jag håller med om att intentionen ska vara tydlig och att man ska undvika förkortningar och “söta” namn. Jag ser också att det ibland kan vara svårt att hitta domänspecifika namn som är begripliga för alla, så jag försöker balansera mellan domän- och lösningsnamn.
+
+
+och för kapitel 3
+
+Här är en tabell över de fem längsta metoderna/funktionerna i projektet, med analys enligt kapitel 3 i Clean Code.
+
+| Metodnamn                        | Länk/kod (fil)                | Antal rader (ej ws) | Regler (följs/bryts) & Förslag                                                                                                   |
+|-----------------------------------|-------------------------------|---------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| removeWords(wordsToRemove, caseSensitive) | TextTransformer.js           | 13                  | Do One Thing: Gör flera saker (loopar, anropar annan metod, städar whitespace). Kan brytas upp i mindre hjälpfunktioner.          |
+| replaceWord(oldWord, newWord, caseSensitive) | TextTransformer.js           | 8                   | Do One Thing: Hanterar både validering och regex-byten. Kan brytas ut till hjälpfunktion för regex-skapande.                      |
+| sortWords(descending)             | TextTransformer.js            | 8                   | Switch Statements: Inga switchar, men sorteringslogik och join i samma metod. Kan brytas ut till sorteringshjälp.                 |
+| transformWordsByPosition(transformFn) | TextTransformer.js           | 7                   | Too Many Arguments: Följer regeln (bara två argument). Gör en sak, men map och join kan brytas ut för testbarhet.                 |
+| filterWords(predicate)            | TextTransformer.js            | 5                   | Gör en sak, men validering och filtrering i samma metod. Kan brytas ut för testbarhet.                                            |
+
+---
+
+## Förslag på förbättringar
+
+- Dela upp metoder som gör flera saker ytterligare även om jag försökt (t.ex. validering, transformation, städning) i mindre hjälpfunktioner. Det kan j alltid drivas längre.
+- Extrahera regex-skapande och whitespace-städning till egna funktioner för att öka återanvändbarhet och testbarhet.
+- Jag har försökt att hålla metoder så korta som möjligt och med ett tydligt syfte.
+
+---
+
+## Reflektion kring kapitel 3
+
+Jag märker att även om mina metoder är relativt korta så gör vissa av dem mer än en sak, t.ex. både validerar, transformerar och städar data. Det är lätt att blanda in flera ansvarsområden i en och samma metod när man vill vara effektiv, men det gör koden svårare att testa och återanvända. Jag håller med om att metoder ska vara små och göra en sak, men ibland känns det överdrivet att bryta ut varje liten detalj – det kan göra koden svårare att överblicka, framför allt eftersom mina metoder är väldigt korta från start. Jag försöker dock tänka på att varje metod ska vara lätt att förstå, namnge och återanvända, och att bryta ut kod när det blir för komplext. Komplexiteten är nog inte ett problem i min modul utan snarare ett försök att förenkla inbyggda metoder. Det lurigaste är nog regex som testat runt i oändlighet...
 
 
 ## Projektstruktur
