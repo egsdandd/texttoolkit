@@ -4,7 +4,9 @@ Hej
 
 Jag har säkert inte gjort denna uppgiften enligt alla de instruktioner vi fått men jag har försökt så gott jag kunnat.
 
-Jag är ju 71-år och pluggar för att jag tycker det är roligt att lära mig nya saker vilket innebär att jag för min del jobbat MYCKET med allt runtomkring och kanske inte så mycket med koden i sig. Jag tycker jag kan kosta på mig att göra det roliga, betyg har underordnad betydelse. 
+Jag är ju 71-år och pluggar för att jag tycker det är roligt att lära mig nya saker vilket innebär att jag för min del jobbat MYCKET med allt runtomkring och kanske inte så mycket med koden i sig, baserat på commit historiken har det nog gått åt mest tid att uppfylla alla dina önskemål om rapporter och md filer.
+
+Jag tycker jag kan kosta på mig att göra det roliga, betyg har underordnad betydelse. 
 
 Jag hade ju lite problem att komma på vad jag skulle koda så jag bad min AI om lite förslag och det resulterade i ett "texttollkit" som manipulerar strängar och texter som ju inte är så upphetsande i sig men det var en bra övning för mig.
 
